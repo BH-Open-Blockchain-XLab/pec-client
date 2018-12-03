@@ -1,8 +1,8 @@
 {
-  "name": "front",
+  "name": "powerchain-frontend",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Starmancer <starmancer@protonmail.com>",
+  "author": "Tang Zongxun <tangzongxun@hotmail.com>",
   "license": "MIT",
   "private": false,
   "devDependencies": {
@@ -14,7 +14,6 @@
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
     "eslint": "^5.8.0",
-    "eslint-config-google": "^0.11.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-react": "^7.11.1",
     "file-loader": "^2.0.0",

@@ -8,7 +8,10 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
-import {withRouter} from 'react-router';
+import {push, goBack, go} from 'connected-react-router';
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 const styles = {
   root: {
@@ -23,30 +26,37 @@ const styles = {
   },
 };
 
-function ButtonAppBar(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <AppBar position="fixed">
-        <Toolbar>
-          {(typeof props.noReturn === 'undefined') && 
-            <IconButton 
-              className={classes.menuButton} 
-              color="inherit" 
-              aria-label="Menu" 
-              onClick={()=>{props.history.goBack();}}
-            >
-              <ArrowBack />
-            </IconButton>
-          }
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            {props.title}
-          </Typography>
-          <Button color="inherit" onClick={()=>{props.history.replace("/");}}>Logout</Button>
-        </Toolbar>
-      </AppBar>
-    </div>
- );
+class ButtonAppBar extends React.Component{
+  constructor(props){
+    super(props);
+  }
+
+  render(){
+    const props = this.props;
+    const { classes } = props;
+    return (
+      <div className={classes.root}>
+        <AppBar position="fixed">
+          <Toolbar>
+            {(typeof props.noReturn === 'undefined') && 
+              <IconButton 
+                className={classes.menuButton} 
+                color="inherit" 
+                aria-label="Menu" 
+                onClick={()=>{props.goBack();}}
+              >
+                <ArrowBack />
+              </IconButton>
+            }
+            <Typography variant="h6" color="inherit" className={classes.grow}>
+              {props.title}
+            </Typography>
+            <Button color="inherit" onClick={()=>{props.logout();}}>Logout</Button>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+ }
 }
 
 ButtonAppBar.propTypes = {
@@ -54,5 +64,14 @@ ButtonAppBar.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-ButtonAppBar = withRouter(withStyles(styles)(ButtonAppBar));
+let dispatchMap = (dispatch) => (bindActionCreators(
+  {
+    goBack: () => goBack(),
+    logout: () => {return (dispatch)=>{dispatch(push("/"));}},
+  },
+  dispatch
+));
+
+ButtonAppBar = connect(null, dispatchMap)(ButtonAppBar);
+ButtonAppBar = withStyles(styles)(ButtonAppBar);
 export default ButtonAppBar;
