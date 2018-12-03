@@ -1,5 +1,6 @@
 node_modules/
 dist/
+dev/
 coverage/
 
 package-lock.json

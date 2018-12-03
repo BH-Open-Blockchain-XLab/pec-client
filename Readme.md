@@ -3,22 +3,28 @@
 ## Download and install dependencies
 
 ```
-git clone [url]
-cd powerchain-front
 sudo apt-get install nodejs npm
+git clone [url]
+cd powerchain-ui
 npm install
 ```
 
-## Build
+## Build (development)
 
 ```
-npm run build
+# First, build the dependencies
+npm run library
+
+# Run watch
+npm run watch
 ```
 
-## Setup a server and open in browser
+## Setup a server 
 
 ```
-cd dist
+cd dev
 python3 -m http.server
 ```
+
+Then open your browser, the default URL is `http://127.0.0.1:8000`.
 

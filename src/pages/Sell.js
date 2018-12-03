@@ -26,7 +26,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import {ButtonAppBar} from '../components';
 
-import {withRouter} from 'react-router';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {replace} from 'connected-react-router';
 
 const styles = theme => ({
   layout: {
@@ -199,7 +201,7 @@ class Sell extends React.Component {
               <Button onClick={()=>{this.handleClose()}} color="primary">
                 No
               </Button>
-              <Button onClick={()=>{this.props.history.replace('/dashboard/')}} color="primary" autoFocus>
+              <Button onClick={()=>{this.props.submit()}} color="primary" autoFocus>
                 Yes
               </Button>
             </DialogActions>
@@ -213,4 +215,12 @@ Sell.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles)(Sell));
+let dispatchMap = (dispatch) => bindActionCreators(
+  {
+    submit: ()=>replace('/dashboard/'),
+  }, 
+  dispatch
+);
+Sell = connect(null, dispatchMap)(Sell);
+
+export default withStyles(styles)(Sell);

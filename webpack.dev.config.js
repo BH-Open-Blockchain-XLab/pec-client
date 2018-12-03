@@ -1,9 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
-    mode: "production",
+    mode: "development",
     entry: {
         app: './src/index.js',
     },
@@ -47,15 +48,19 @@ module.exports = {
             template: './src/index.html',
             filename: 'index.html',
         }),
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['dev/*.js', 'dev/*.html']),
+        new webpack.DllReferencePlugin({
+          context: __dirname,
+          manifest: require('./dev/library/lib.json'),
+        }),
     ],
     output: {
         filename: '[name].[contenthash].js',
         publicPath: '/',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dev')
     },
     devServer: {
-        contentBase: './dist'
+        contentBase: './dev'
     },
 };
 

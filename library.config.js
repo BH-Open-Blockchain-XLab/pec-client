@@ -1,13 +1,12 @@
+const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-    mode: "production",
-    entry: {
-        app: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, './dev/library'),
+        filename: '[name].js',
+        library: '[name]',
     },
-    devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -42,21 +41,23 @@ module.exports = {
             },
         ]
     },
+    entry: {
+        "lib": [
+          'react',
+          'redux',
+          '@material-ui/core',
+          '@material-ui/icons',
+          'connected-react-router',
+          'react-dom',
+          'react-redux',
+          'redux-thunk',
+          'typeface-roboto',
+        ],
+    },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: 'index.html',
+        new webpack.DllPlugin({
+            path: './dev/library/[name].json',
+            name: '[name]',
         }),
-        new CleanWebpackPlugin(['dist']),
     ],
-    output: {
-        filename: '[name].[contenthash].js',
-        publicPath: '/',
-        path: path.resolve(__dirname, 'dist')
-    },
-    devServer: {
-        contentBase: './dist'
-    },
 };
-
-

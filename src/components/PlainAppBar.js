@@ -8,7 +8,9 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import { withRouter } from "react-router";
+import {push} from 'connected-react-router';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 const styles = {
   root: {
@@ -34,9 +36,7 @@ function PlainAppBar(props) {
           </Typography>
           <Button 
             color="inherit"  
-            onClick={()=> {
-              props.history.push('/signin/');}
-            }
+            onClick={()=>props.signIn()}
           >
             Login
           </Button>
@@ -50,4 +50,13 @@ PlainAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles)(PlainAppBar));
+let dispatchMap = (dispatch) => (bindActionCreators(
+  {
+    signIn: ()=>push("/signin/"), 
+  }, 
+  dispatch
+));
+
+PlainAppBar = connect(null, dispatchMap)(PlainAppBar);
+
+export default withStyles(styles)(PlainAppBar);

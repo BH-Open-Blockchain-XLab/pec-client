@@ -6,16 +6,22 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import {Paper, Grid, CardContent} from '@material-ui/core';
+import {
+  Paper, 
+  Grid, 
+  CardContent, 
+  Avatar,
+  Typography
+} from '@material-ui/core';
 
 import {ArrowUpward, ArrowDownward, AccountBalanceWallet} from '@material-ui/icons';
 
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {push} from 'connected-react-router';
 
 import {ButtonAppBar} from '../components';
 
-import {withRouter} from 'react-router';
 
 const styles = (theme) => ({
   heroUnit: {
@@ -52,7 +58,7 @@ function IndexCards(props){
   const { classes } = props;
   return (
     <Grid item xs={12} md={4}>
-    <div onClick={()=>{props.history.push(props.to)}}>
+    <div onClick={()=>props.enter(props.to)}>
     <Paper className={classes.card}>
       {props.icon}
       <Typography gutterBottom variant="h5" component="h2">
@@ -64,7 +70,15 @@ function IndexCards(props){
   );
 }
 
-IndexCards = withRouter(withStyles(cardStyles)(IndexCards));
+let dispatchMap = (dispatch) => bindActionCreators(
+  {
+    enter: (to)=>push(to),
+  },
+  dispatch
+);
+
+IndexCards = connect(null, dispatchMap)(IndexCards);
+IndexCards = withStyles(cardStyles)(IndexCards);
 
 class Dashboard extends React.Component {
   render() {
