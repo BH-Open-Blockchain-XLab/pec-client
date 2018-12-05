@@ -24,7 +24,7 @@ import {
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import {ButtonAppBar} from '../components';
+import {ButtonAppBar, ConfirmDialog} from '../components';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -183,29 +183,21 @@ class Sell extends React.Component {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={()=>{this.handleClickOpen();}}
+                onClick={()=>this.handleClickOpen()}
               >
                 Sell
               </Button>
             </form>
           </Paper>
         </main>
+
+        <ConfirmDialog
+          yes={()=>props.submit()}
+          no={()=>this.handleClose()}
+          title={"Are you sure?"}
+          open={this.state.open}
+        />
   
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="alert-dialog-title"
-          >
-            <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
-            <DialogActions>
-              <Button onClick={()=>{this.handleClose()}} color="primary">
-                No
-              </Button>
-              <Button onClick={()=>{this.props.submit()}} color="primary" autoFocus>
-                Yes
-              </Button>
-            </DialogActions>
-        </Dialog>
       </React.Fragment>
     );
   }
