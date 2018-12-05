@@ -3,28 +3,30 @@
 ## Download and install dependencies
 
 ```
-sudo apt-get install nodejs npm
-git clone [url]
+git clone https://github.com/BH-Open-Blockchain-XLab/powerchain-ui.git
 cd powerchain-ui
 npm install
 ```
 
-## Build (development)
+## Development
+
+First, compile dependencies. Run this only when dependencies are updated.
 
 ```
-# First, build the dependencies
 npm run library
-
-# Run watch
-npm run watch
 ```
 
-## Setup a server 
+Then setup a dev server.
 
 ```
-cd dev
-python3 -m http.server
+npm run start
 ```
 
-Then open your browser, the default URL is `http://127.0.0.1:8000`.
+# Release
+
+```
+npm run release
+```
+
+Released files are under `./dist`.
 
