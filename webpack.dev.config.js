@@ -60,7 +60,8 @@ module.exports = {
         path: path.resolve(__dirname, 'dev')
     },
     devServer: {
-        contentBase: './dev'
+        contentBase: './dev',
+        historyApiFallback: true,
     },
 };
 
