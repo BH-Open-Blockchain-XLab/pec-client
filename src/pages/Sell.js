@@ -68,10 +68,14 @@ class Sell extends React.Component {
     this.state = {
       open: false,
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
-  handleClickOpen(){
+  handleSubmit(event){
     this.setState({ open: true });
+    event.preventDefault();
   }
 
   handleClose(){
@@ -90,8 +94,11 @@ class Sell extends React.Component {
             <Typography component="h1" variant="h5">
               Sell Eletricity
             </Typography>
-            <form className={classes.form}>
-  
+            <form 
+              className={classes.form} 
+              onSubmit={this.handleSubmit}
+            >
+
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="value">Value</InputLabel>
                 <Input id="value" 
@@ -183,7 +190,6 @@ class Sell extends React.Component {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={()=>this.handleClickOpen()}
               >
                 Sell
               </Button>
