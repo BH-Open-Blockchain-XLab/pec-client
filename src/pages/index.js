@@ -1,4 +1,4 @@
-//export {default as Account} from "./Account";
+export {default as Account} from "./Account";
 //export {default as Buy} from "./Buy";
 export {default as Dashboard} from "./Dashboard";
 export {default as Entrance} from "./Entrance";

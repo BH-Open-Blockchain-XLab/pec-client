@@ -16,9 +16,9 @@ class ButtonAppBar extends React.Component{
     return (
       <div class="navbar m-2 bg-gray">
         <div class="navbar-section">
-          {(typeof props.noReturn == false) && 
+          {(props.noReturn == false) && 
             <button 
-              class="btn btn-link"
+              class="btn btn-primary"
               onClick={()=>{props.goBack();}}
             >
               <i class="icon icon-arrow-left"></i>

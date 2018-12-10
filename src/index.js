@@ -11,7 +11,7 @@ import {
   Dashboard,
 //   Buy,
 //   Sell,
-//   Account,
+  Account,
   SignIn,
   Entrance
 } from './pages';
@@ -28,6 +28,7 @@ const App = ({history}) => (
         <Route exact path="/" component={Entrance} />
         <Route path="/signin/" component={SignIn} />
         <Route path="/dashboard/" component={Dashboard} />
+        <Route path="/account/" component={Account} />
         <Route component={Entrance} />
       </Switch>
     </div>

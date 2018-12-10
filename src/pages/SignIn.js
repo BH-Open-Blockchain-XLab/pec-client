@@ -33,7 +33,7 @@ class SignIn extends React.Component {
         <h1 class="text-center">
           Sign in
         </h1>
-        <div class="container">
+        <div class="container grid-sm">
           <form 
             class="column col-6 col-sm-12 col-mx-auto"
             onSubmit={this.handleLogin}   
@@ -46,9 +46,11 @@ class SignIn extends React.Component {
               <div class="form-label" for="password">Password</div>
               <input class="form-input" type="text" id="password" placeholder="password" />
             </div>
-            <button class="btn" type="submit">
-              Sign in
-            </button>
+            <div class="text-right">
+              <button class="btn" type="submit">
+                Sign in
+              </button>
+            </div>
           </form>
         </div>
       </React.Fragment>
