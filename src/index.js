@@ -10,7 +10,7 @@ import {ConnectedRouter} from 'connected-react-router';
 import {
   Dashboard,
   Buy,
-//   Sell,
+  Sell,
   Account,
   SignIn,
   Entrance
@@ -30,6 +30,7 @@ const App = ({history}) => (
         <Route path="/dashboard/" component={Dashboard} />
         <Route path="/account/" component={Account} />
         <Route path="/buy/" component={Buy} />
+        <Route path="/sell/" component={Sell} />
         <Route component={Entrance} />
       </Switch>
     </div>
