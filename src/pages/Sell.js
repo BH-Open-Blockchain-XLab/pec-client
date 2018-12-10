@@ -2,65 +2,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  FormControl,
-  FormControlLabel,
-  Checkbox,
-  Input,
-  InputLabel,
-  LockIcon, 
-  Paper,
-  Typography,
-  Grid,
-  TextField,
-  InputAdornment,
-  Dialog,
-  DialogTitle,
-  DialogActions
-} from '@material-ui/core';
-
-import withStyles from '@material-ui/core/styles/withStyles';
-
 import {ButtonAppBar, ConfirmDialog} from '../components';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {replace} from 'connected-react-router';
 
-const styles = theme => ({
-  layout: {
-    width: 'auto',
-    display: 'block', // Fix IE 11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    marginTop: 80,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-  paper: {
-    marginTop: theme.spacing.unit * 8,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
-  },
-  submit: {
-    marginTop: theme.spacing.unit * 3,
-  },
-  timeGrid: {
-    marginTop: 10,
-  }
-});
+function DatetimePicker(props){ 
+  return (
+    <div class="form-group columns my-2">
+      <div class="col-3 text-center">
+        <label class="form-label">{props.title}</label>
+      </div>
+      <div class="col-9">
+        <input class="form-input mb-1" type="date" id={props.id+"-date"} />
+        <input class="form-input" type="time" id={props.id+"-time"} />
+      </div>
+    </div>
+  );
+}
+DatetimePicker.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+};
+
+function InputRow(props){
+  return (
+    <div class="from-group columns my-2">
+      <div class="col-3 text-center">
+        <label class="form-label">{props.title}</label>
+      </div>
+      <div class="col-9">
+        <input id={props.id} class="form-input" type={props.type} />
+      </div>
+    </div>
+  );
+}
+InputRow.propTypes = {
+  title: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+};
+
 
 class Sell extends React.Component {
   constructor(props){
@@ -83,119 +66,25 @@ class Sell extends React.Component {
   }
 
   render(){
-    const { classes } = this.props;
     const props = this.props;
     return ( 
-      <React.Fragment>
-        <CssBaseline />
-        <ButtonAppBar title="Sell" />
-        <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              Sell Eletricity
-            </Typography>
-            <form 
-              className={classes.form} 
-              onSubmit={this.handleSubmit}
-            >
+      <div>
+        <ButtonAppBar title="Sell" noReturn={false} />
+        <div class="text-center">
+          <h1>Sell Eletricity</h1>
+        </div>
+        <div class="container grid-sm">
+          <form class="form-horizonal" onSubmit={this.handleSubmit}>
+            <InputRow title="Value(kWh):" id="value" type="number" />
+            <InputRow title="Price(￥):" id="price" type="number" />
+            <DatetimePicker id="start" title="Start:" />
+            <DatetimePicker id="end" title="End:" />
 
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="value">Value</InputLabel>
-                <Input id="value" 
-                       name="value" 
-                       autoFocus 
-                       endAdornment={
-                         <InputAdornment position="end">
-                           kWh
-                         </InputAdornment>
-                       }
-                />
-              </FormControl>
-  
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="price">Price</InputLabel>
-                <Input id="price" 
-                       name="price" 
-                       autoFocus 
-                       endAdornment={
-                         <InputAdornment position="start">
-                           ￥
-                         </InputAdornment>
-                       }
-                />
-              </FormControl>
-  
-              <Grid container item className={classes.timeGrid} spacing={32}>
-                <Grid item>
-                  <TextField
-                    id="date"
-                    label="Start at"
-                    type="date"
-                    defaultValue="2017-05-24"
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id="time"
-                    label="Time"
-                    type="time"
-                    defaultValue="07:30"
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    inputProps={{
-                     step: 300, // 5 min
-                    }}
-                  />
-                </Grid>
-              </Grid>
-              <Grid container item className={classes.timeGrid} spacing={32}>
-                <Grid item>
-                  <TextField
-                    id="date"
-                    label="End in"
-                    type="date"
-                    defaultValue="2017-05-24"
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-               />
-               </Grid>
-               <Grid item>
-                 <TextField
-                   id="time"
-                   label="Time"
-                   type="time"
-                   defaultValue="07:30"
-                   className={classes.textField}
-                   InputLabelProps={{
-                     shrink: true,
-                   }}
-                   inputProps={{
-                    step: 300, // 5 min
-                   }}
-                 />
-               </Grid>
-              </Grid>
-  
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sell
-              </Button>
-            </form>
-          </Paper>
-        </main>
+            <div class="text-right"> 
+              <button type="submit" class="btn btn-primary">Sell</button>
+            </div>
+          </form>
+        </div>
 
         <ConfirmDialog
           yes={()=>props.submit()}
@@ -203,15 +92,10 @@ class Sell extends React.Component {
           title={"Are you sure?"}
           open={this.state.open}
         />
-  
-      </React.Fragment>
+      </div>
     );
   }
 }
-
-Sell.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 let dispatchMap = (dispatch) => bindActionCreators(
   {
@@ -221,4 +105,4 @@ let dispatchMap = (dispatch) => bindActionCreators(
 );
 Sell = connect(null, dispatchMap)(Sell);
 
-export default withStyles(styles)(Sell);
+export default Sell;

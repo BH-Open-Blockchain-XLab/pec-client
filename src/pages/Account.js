@@ -1,90 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-
-import {
-  Avatar, 
-  Grid, 
-  Card, 
-  CardHeader, 
-  CardContent, 
-  Typography,
-  Button,
-  CardActions
-} from '@material-ui/core';
-
-import {ArrowBack, ArrowForward} from '@material-ui/icons';
 
 import {ButtonAppBar} from '../components';
-
-const styles = (theme) => ({
-  mainGrid:{
-    marginTop: 100, 
-  },
-});
 
 let txList = [
   {typename:'sell', value: 10, name: "Alice", price: 10},
   {typename: 'buy', value: 20, name: "Bob", price: 19},
 ];
 
-function getAvatar(typename){
-  if(typename == 'sell'){
+class TxHistory extends React.Component{
+  constructor(props){
+    super(props);
+  }
+
+  render(){
+    const {tx} = this.props;
+
     return (
-      <Avatar>
-        <ArrowBack />
-      </Avatar>
-    );
-  } else if(typename == 'buy'){
-    return (
-      <Avatar>
-        <ArrowForward />
-      </Avatar>
+      <React.Fragment> 
+        <div class="columns my-1">      
+          <div class="col-6 pl-2"> 
+            <span>{tx.value + ' kWh @ ￥' + tx.price}</span> 
+          </div>
+          <div class="col-4">
+            <span class="">
+              {(tx.typename=='sell') ? "To" : "From"}: {tx.name}
+            </span> 
+          </div>
+          <div class="col-2">
+            <button class="btn">Details</button>
+          </div>
+        </div>
+      </React.Fragment>
     );
   }
-}
+};
+
+TxHistory.propTypes = {
+  tx: PropTypes.object.isRequired,
+};
+
 
 function Account(props){
-  const { classes } = props;
-
   return (
-    <React.Fragment>
-    <ButtonAppBar title="Account" /> 
-    <Grid container spacing={16} direction="column" className={classes.mainGrid}>
-      <Grid item>
-        <Typography gutterBottom variant="h5" component="h2" align="center">
-          User
-        </Typography> 
-        <Typography gutterBottom variant="h5" component="h2" align="center">
-          Balance: 10 
-        </Typography> 
-        <Typography gutterBottom variant="h5" component="h2" align="center"> 
-          Electricity: 10 kWh
-        </Typography> 
-      </Grid>
-      {txList.map(tx => (
-        <Grid item key={JSON.stringify(tx)}> 
-          <Card>      
-            <CardHeader 
-              title={tx.value + ' kWh @ ￥' + tx.price} 
-              avatar={getAvatar(tx.typename)}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2" color="textSecondary">
-                {(tx.typename=='sell') ? "To" : "From"} {tx.name}
-              </Typography> 
-            </CardContent>
-            <CardActions>
-              <Button color="primary">
-                Details
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-      ))}     
-    </Grid>
-    </React.Fragment>
+    <div>
+      <ButtonAppBar title="Account" noReturn={false} /> 
+      <div class="container grid-sm">
+        <div class="text-center">
+          <h3>User</h3>
+        </div>
+        <div class="text-center">
+          <h2><b>Balance:</b> 10</h2>
+        </div>
+        <div class="text-center">
+          <h2><b>Electricity:</b> 10 KWh</h2>
+        </div>
+        {txList.map(tx => (
+          <TxHistory tx={tx} key={JSON.stringify(tx)} />
+        ))}     
+      </div>
+    </div>
   );
 }
 
-export default withStyles(styles)(Account);
+export default Account;

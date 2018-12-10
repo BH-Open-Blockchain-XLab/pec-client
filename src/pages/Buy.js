@@ -1,66 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 
-import {
-  Avatar, 
-  Grid, 
-  Card, 
-  CardHeader, 
-  CardContent, 
-  Typography,
-  Button,
-  CardActions
-} from '@material-ui/core';
-
-import {Power} from '@material-ui/icons';
-
-import {ButtonAppBar, ConfirmDialog} from '../components';
-
-const styles = (theme) => ({
-  mainGrid:{
-    marginTop: 100, 
-  },
-});
+import {ConfirmDialog, ButtonAppBar} from "../components";
 
 let waitList = [
   {value: 10, name: "Alice"},
   {value: 20, name: "Bob"},
 ];
 
+class TxCard extends React.Component{
+  constructor(props){
+    super(props);
+  }
+
+  render(){
+    const props = this.props;
+    const {tx} = this.props;
+    
+    return (
+      <div class="columns my-2"> 
+        <div class="col-4 col-mx-auto text-center">      
+          {tx.value + ' kWh'} 
+        </div>
+        <div class="col-6 col-mx-auto text-center">
+          {'Power from ' + tx.name}
+        </div> 
+        <div class="col-2 col-mx-auto text-center">
+          <button class="btn" onClick={()=>props.buy()}>
+            Buy
+          </button>
+        </div>
+      </div>
+    );
+  }
+};
+
+
+TxCard.propTypes = {
+  tx: PropTypes.object.isRequired,
+  buy: PropTypes.func.isRequired,
+}
+
+
 class Buy extends React.Component{
   constructor(props){
     super(props);
-
     this.state = {
-      dialog:{
-        open: false,
-      }
+      dialogOpen: false,
+      dialogAction: ()=>null,
     };
-
     this.handleBuy = this.handleBuy.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.submitPUrchase = this.handleClose.bind(this);
+    this.submitPurchase = this.handleClose.bind(this);
   }
 
   handleBuy(tx){
-    console.log("buy");
     this.setState({
-      dialog: {
-        open: true, 
-        action: ()=>this.submitPurchase(tx),
-      }
+      dialogOpen: true,
+      dialogAction: ()=>this.submitPurchase(tx),
     });
   }
   handleClose(){
     this.setState({
-      dialog: {
-        open: false,
-        action: ()=>null
-      }
+      dialogOpen: false,
     });
   }
-
   submitPurchase(tx){
     //async fetch
     this.handleClose();
@@ -68,46 +72,27 @@ class Buy extends React.Component{
 
   render(){
     let props = this.props;
-    const { classes } = props;
-
     return (
-      <React.Fragment>
-      <ButtonAppBar title="Buy" /> 
-      <Grid container spacing={16} direction="column" className={classes.mainGrid}>
-        {waitList.map(tx => (
-          <Grid item key={JSON.stringify(tx)}> 
-            <Card>      
-              <CardHeader 
-                title={tx.value + ' kWh'} 
-                avatar={
-                  <Avatar>
-                    <Power />
-                  </Avatar>
-                }
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2" color="textSecondary">
-                  {'Power from ' + tx.name}
-                </Typography> 
-              </CardContent>
-              <CardActions>
-                <Button color="primary" onClick={()=>(this.handleBuy(tx))}>
-                  Buy
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}     
-      </Grid>
-      <ConfirmDialog 
-        title={"Are you sure?"}
-        open={this.state.dialog.open}
-        yes={this.state.dialog.action}
-        no={this.handleClose}
-      />
-      </React.Fragment>
+      <div>
+        <ButtonAppBar title="Buy" noReturn={false} /> 
+        <div class="container grid-sm">
+          {waitList.map(tx => (
+            <TxCard 
+              tx={tx} 
+              key={JSON.stringify(tx)} 
+              buy={()=>this.handleBuy(tx)}
+            />
+          ))}     
+        </div>
+        <ConfirmDialog 
+          title={"Are you sure?"}
+          open={this.state.dialogOpen}
+          yes={this.state.dialogAction}
+          no={this.handleClose}
+        />
+      </div>
     );
   }
 }
 
-export default withStyles(styles)(Buy);
+export default Buy;

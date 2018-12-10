@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
+    mode: "production",
     output: {
         path: path.resolve(__dirname, './dev/library'),
         filename: '[name].js',
@@ -45,13 +46,11 @@ module.exports = {
         "lib": [
           'react',
           'redux',
-          '@material-ui/core',
-          '@material-ui/icons',
           'connected-react-router',
           'react-dom',
           'react-redux',
           'redux-thunk',
-          'typeface-roboto',
+          'spectre.css'
         ],
     },
     plugins: [
