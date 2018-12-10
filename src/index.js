@@ -2,7 +2,7 @@ import "./scss/main.scss";
 import "@babel/polyfill";
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Route, Link, Switch } from "react-router-dom";
+import {Route, Link, Switch} from "react-router-dom";
 
 import {Provider} from 'react-redux';
 import {ConnectedRouter} from 'connected-react-router';
@@ -24,9 +24,12 @@ import {default as store, history} from './store';
 const App = ({history}) => (
   <ConnectedRouter history={history}>
     <div>
-     <Route exact path="/" component={Entrance} />
-     <Route path="/signin/" component={SignIn} />
-     <Route path="/dashboard/" component={Dashboard} />
+      <Switch>
+        <Route exact path="/" component={Entrance} />
+        <Route path="/signin/" component={SignIn} />
+        <Route path="/dashboard/" component={Dashboard} />
+        <Route component={Entrance} />
+      </Switch>
     </div>
   </ConnectedRouter>
 );

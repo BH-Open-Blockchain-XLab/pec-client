@@ -2,26 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import {
-  Avatar, 
-  Grid, 
-  Card, 
-  CardHeader, 
-  CardContent, 
-  Typography,
-  Button,
-  CardActions
-} from '@material-ui/core';
-
 import {ArrowBack, ArrowForward} from '@material-ui/icons';
 
 import {ButtonAppBar} from '../components';
-
-const styles = (theme) => ({
-  mainGrid:{
-    marginTop: 100, 
-  },
-});
 
 let txList = [
   {typename:'sell', value: 10, name: "Alice", price: 10},

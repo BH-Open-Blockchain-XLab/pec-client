@@ -11,12 +11,14 @@ import {ButtonAppBar} from '../components';
 function IndexCard(props){
   return (
     <div class="column col-mx-auto col-12 text-center my-2">
+    <div class="btn-group btn-group-block">
       <button 
         onClick={()=>props.enter(props.to)}
-        class="btn btn-link"
+        class="btn"
       >
         {props.value}
       </button>
+    </div>
     </div>
   );
 }
