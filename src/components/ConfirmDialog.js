@@ -1,31 +1,28 @@
-import {
-  Dialog, 
-  Button,
-  DialogTitle,
-  DialogActions
-} from '@material-ui/core';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ConfirmDialog(props){
-  return (
-    <Dialog
-      open={props.open}
-      onClose={props.no}
-      aria-labelledby="alert-dialog-title"
-    >
-      <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
-      <DialogActions>
-        <Button onClick={()=>{props.no()}} color="primary">
-          No
-        </Button>
-        <Button onClick={()=>{props.yes()}} color="primary" autoFocus>
-          Yes
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+class ConfirmDialog extends React.Component{
+  constructor(props){
+    super(props);
+  }
+
+  render(){
+    props = this.props;
+    return (
+      <div class={"modal " + (props.open ? "active" : "")}>
+        <a class="modal-overlay" onClick={()=>props.no()}></a>
+        <div class="modal-container">
+          <div class="modal-header">
+            <div class="modal-title h5">{props.title}</div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" onClick={()=>props.yes()}>Yes</button>
+            <button class="btn btn-link" onClick={()=>props.no()}>No</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 ConfirmDialog.propTypes = {
