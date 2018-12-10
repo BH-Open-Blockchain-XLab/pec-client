@@ -8,7 +8,7 @@ import {Provider} from 'react-redux';
 import {ConnectedRouter} from 'connected-react-router';
 
 import {
-//   Dashboard,
+  Dashboard,
 //   Buy,
 //   Sell,
 //   Account,
@@ -24,8 +24,9 @@ import {default as store, history} from './store';
 const App = ({history}) => (
   <ConnectedRouter history={history}>
     <div>
-     <Route path="/" exact component={Entrance} />
+     <Route exact path="/" component={Entrance} />
      <Route path="/signin/" component={SignIn} />
+     <Route path="/dashboard/" component={Dashboard} />
     </div>
   </ConnectedRouter>
 );

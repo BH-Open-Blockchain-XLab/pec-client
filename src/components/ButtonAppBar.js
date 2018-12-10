@@ -24,10 +24,10 @@ class ButtonAppBar extends React.Component{
               <i class="icon icon-arrow-left"></i>
             </button>
           }
-          <h3>{props.title}</h3>
+          <h3 class="navbar-brand mx-2 text-primary">{props.title}</h3> 
         </div>
         <div class="navbar-section">
-            <button class="inherit" onClick={()=>{props.logout();}}>Logout</Button>
+            <button class="btn btn-primary" onClick={()=>{props.logout();}}>Logout</button>
         </div>
       </div>
     );
