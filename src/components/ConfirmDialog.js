@@ -7,7 +7,7 @@ class ConfirmDialog extends React.Component{
   }
 
   render(){
-    props = this.props;
+    const props = this.props;
     return (
       <div class={"modal " + (props.open ? "active" : "")}>
         <a class="modal-overlay" onClick={()=>props.no()}></a>

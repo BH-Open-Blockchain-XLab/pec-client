@@ -24,7 +24,7 @@ class ButtonAppBar extends React.Component{
               <i class="icon icon-arrow-left"></i>
             </button>
           }
-          <h3 class="navbar-brand mx-2 text-primary">{props.title}</h3> 
+          <div class="navbar-brand mx-2 text-primary">{props.title}</div> 
         </div>
         <div class="navbar-section">
             <button class="btn btn-primary" onClick={()=>{props.logout();}}>Logout</button>
