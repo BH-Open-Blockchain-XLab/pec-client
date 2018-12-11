@@ -6,6 +6,8 @@ import {push, goBack, go} from 'connected-react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
+import ACTION from '../actions';
+
 class ButtonAppBar extends React.Component{
   constructor(props){
     super(props);
@@ -42,7 +44,12 @@ ButtonAppBar.propTypes = {
 let dispatchMap = (dispatch) => (bindActionCreators(
   {
     goBack: () => goBack(),
-    logout: () => {return (dispatch)=>{dispatch(push("/"));}},
+    logout: () => (
+      (dispatch)=>{
+        localStorage.removeItem('sessionId');
+        dispatch(ACTION.logout());
+        dispatch(push("/"));
+    }),
   },
   dispatch
 ));

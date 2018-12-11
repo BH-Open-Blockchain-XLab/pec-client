@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 
+import signin from './signin';
+
 const createRouteReducer =  (history) => combineReducers({
   router: connectRouter(history),
-  // rest of reducers
+  signin,
 });
 
 export default createRouteReducer;

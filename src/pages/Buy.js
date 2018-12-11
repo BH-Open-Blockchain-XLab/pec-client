@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {ConfirmDialog, ButtonAppBar} from "../components";
+import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 let waitList = [
   {value: 10, name: "Alice"},
@@ -71,7 +73,13 @@ class Buy extends React.Component{
   }
 
   render(){
-    let props = this.props;
+    const props = this.props;
+
+    if (!props.isLoggedIn) {
+      return (
+        <Redirect to="/signin/" />         
+      );
+    }
     return (
       <div>
         <ButtonAppBar title="Buy" noReturn={false} /> 
@@ -95,4 +103,8 @@ class Buy extends React.Component{
   }
 }
 
-export default Buy;
+let stateMap = (state) => {return ({
+  isLoggedIn: state.signin.isLoggedIn,
+});};
+
+export default connect(stateMap)(Buy);

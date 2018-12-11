@@ -6,7 +6,7 @@ import {createRootReducer} from './reducers';
 
 export const history = createHistory();
 
-const initialState = {
+export const initialState = {
   isLoggedIn: false,
 };
 

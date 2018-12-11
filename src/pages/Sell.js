@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {ButtonAppBar, ConfirmDialog} from '../components';
+import {Redirect} from 'react-router-dom';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -67,6 +68,12 @@ class Sell extends React.Component {
 
   render(){
     const props = this.props;
+
+    if (!props.isLoggedIn) {
+      return (
+        <Redirect to="/signin/" />         
+      );
+    }
     return ( 
       <div>
         <ButtonAppBar title="Sell" noReturn={false} />
@@ -103,6 +110,9 @@ let dispatchMap = (dispatch) => bindActionCreators(
   }, 
   dispatch
 );
-Sell = connect(null, dispatchMap)(Sell);
+let stateMap = (state) => {return ({
+  isLoggedIn: state.signin.isLoggedIn,
+});};
 
+Sell = connect(stateMap, dispatchMap)(Sell);
 export default Sell;

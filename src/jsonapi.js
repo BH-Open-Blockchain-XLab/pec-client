@@ -3,7 +3,7 @@ import config from './config';
 import 'whatwg-fetch'
 
 let headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json; charset=utf-8'
 };
 
 let jsonapi = {

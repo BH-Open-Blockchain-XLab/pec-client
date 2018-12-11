@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {ButtonAppBar} from '../components';
+import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 let txList = [
   {typename:'sell', value: 10, name: "Alice", price: 10},
@@ -42,6 +44,11 @@ TxHistory.propTypes = {
 
 
 function Account(props){
+  if (!props.isLoggedIn) {
+    return (
+      <Redirect to="/signin/" />         
+    );
+  }
   return (
     <div>
       <ButtonAppBar title="Account" noReturn={false} /> 
@@ -63,4 +70,8 @@ function Account(props){
   );
 }
 
-export default Account;
+let stateMap = (state) => {return ({
+  isLoggedIn: state.signin.isLoggedIn,
+});};
+
+export default connect(stateMap)(Account);

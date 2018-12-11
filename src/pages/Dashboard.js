@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {push} from 'connected-react-router';
+import {Redirect} from 'react-router-dom';
 
 import {ButtonAppBar} from '../components';
 
@@ -35,6 +36,14 @@ IndexCard = connect(null, dispatchMap)(IndexCard);
 class Dashboard extends React.Component {
   render() {
     const { classes } = this.props;
+    const props = this.props;
+
+    if (!props.isLoggedIn) {
+      return (
+        <Redirect to="/signin/" />         
+      );
+    }
+
     return (
       <div>
         <ButtonAppBar title="Dashboard" noReturn={true} />
@@ -48,6 +57,10 @@ class Dashboard extends React.Component {
       </div>
     )
   }
-}
+};
 
-export default Dashboard;
+let stateMap = (state) => {return ({
+  isLoggedIn: state.signin.isLoggedIn,
+});};
+
+export default connect(stateMap)(Dashboard);

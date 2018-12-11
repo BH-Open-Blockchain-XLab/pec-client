@@ -19,7 +19,12 @@ import {
 import {PlainAppBar} from './components';
 
 import {default as store, history} from './store';
+import ACTION from './actions';
 
+let sessionId = localStorage.getItem('sessionId');
+if (sessionId != null){
+  store.dispatch(ACTION.login(sessionId));
+}
 
 const App = ({history}) => (
   <ConnectedRouter history={history}>
