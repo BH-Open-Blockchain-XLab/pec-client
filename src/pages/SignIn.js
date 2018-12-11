@@ -12,7 +12,7 @@ import ACTION from '../actions';
 function Button(props){
   if (props.isLogging){
     return(
-      <button class="btn loading" onClick={undefined}>
+      <button class="btn btn-link loading" onClick={undefined}>
       </button>
     );
   }
@@ -43,6 +43,9 @@ class SignIn extends React.Component {
       account: formdata.get('account'),
       password: formdata.get('password'),
     }; 
+    self.setState({
+      isLogging: true, 
+    });
     try {
       let res = await api.post('/usr/login', logindata);
       if(res['msg'] == 'passed'){
@@ -51,12 +54,11 @@ class SignIn extends React.Component {
         throw new Error("Login failed");
       }
     } catch(e){
-      console.log(e);
+      this.setState({
+        isLoggin: false, 
+      });
       alert("Login failed.")
     }
-    self.setState({
-      isLogging: false, 
-    });
   }
 
   render(){
