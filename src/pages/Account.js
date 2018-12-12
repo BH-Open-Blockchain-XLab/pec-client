@@ -5,11 +5,6 @@ import {ButtonAppBar} from '../components';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-let txList = [
-  {typename:'sell', value: 10, name: "Alice", price: 10},
-  {typename: 'buy', value: 20, name: "Bob", price: 19},
-];
-
 class TxHistory extends React.Component{
   constructor(props){
     super(props);
@@ -42,36 +37,116 @@ TxHistory.propTypes = {
   tx: PropTypes.object.isRequired,
 };
 
-
-function Account(props){
-  if (!props.isLoggedIn) {
-    return (
-      <Redirect to="/signin/" />         
-    );
+function processList(res){
+  let list = [];
+  for (let d in res.delivery){
+    let tx = {
+      status: d.status,
+      time: d.timestampSell,
+      value: d.value,
+      amount: d.amount,
+      type: d.type,
+      user: d.to,
+    };
+    list.append(tx);
   }
-  return (
-    <div>
-      <ButtonAppBar title="Account" noReturn={false} /> 
-      <div class="container grid-sm">
-        <div class="text-center">
-          <h3>User</h3>
-        </div>
-        <div class="text-center">
-          <h2><b>Balance:</b> 10</h2>
-        </div>
-        <div class="text-center">
-          <h2><b>Electricity:</b> 10 KWh</h2>
-        </div>
-        {txList.map(tx => (
-          <TxHistory tx={tx} key={JSON.stringify(tx)} />
-        ))}     
-      </div>
-    </div>
-  );
+  for(let d in res.purchase){
+    let tx = {
+      status: d.status,
+      time: d.timestampBuy,
+      value: d.value,
+      amount: d.amount,
+      type: d.type,
+      user: d.from,
+    };
+    list.append(tx);
+  }
+
+  list.sort((a, b) => {
+    if (a.time > b.time) return -1;
+    if (a.time = b.time) return 0;
+    if (a.time < b.time) return 1;
+  });
+  return list;
 }
 
-let stateMap = (state) => {return ({
+class Account extends React.Component{
+  constructor(props){
+    super(props);
+
+    this.state = {
+      loading: true,
+      txList: [],
+      balance: "--",
+      account: "--"
+    };
+
+    this.refresh = this.refresh.bind(this);
+  }
+
+  async refresh(){
+    const url = "/usr/account/msgInfo/" + this.props.sessionID;
+    try{
+      let res = await api.get(url); 
+    } catch(e) {
+      return;
+    }
+
+    if(res && res["msg"] != "failed"){
+      let list = processList(res);
+      this.setState({
+        loading: false,
+        txList: list, 
+        account: res,account,
+        balance: res.balance,
+      });
+    }
+  }
+
+  componentDidMount(){
+    refresh();
+    this.autoRefresh = setInteval(()=>this.refresh(), 30000);
+  }
+
+  componentWillUnmount(){
+    if(this.autoRefresh){
+      clearInterval(this.autoRefresh);
+    }
+  }
+
+  render(){
+    const props = this.props;
+
+    if (this.state.loading){
+      return (<div class="loading loading-lg"></div>);
+    }
+    if (!props.isLoggedIn) {
+      return (
+        <Redirect to="/signin/" />         
+      );
+    }
+    return (
+      <div>
+        <ButtonAppBar title="Account" noReturn={false} /> 
+        <div class="container grid-sm">
+          <div class="text-center">
+            <h3>User</h3>
+          </div>
+          <div class="text-center">
+            <h2><b>Balance:</b> {this.state.balance}</h2>
+          </div>
+          {this.state.txList.map(tx => (
+            <TxHistory tx={tx} key={JSON.stringify(tx)} />
+          ))}     
+        </div>
+      </div>
+    );
+  }
+}
+
+let stateMap = (state) => ({
   isLoggedIn: state.signin.isLoggedIn,
-});};
+  sessionId: state.signin.sessionToken,
+});
 
 export default connect(stateMap)(Account);

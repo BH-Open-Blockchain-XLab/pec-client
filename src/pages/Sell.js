@@ -16,8 +16,8 @@ function DatetimePicker(props){
         <label class="form-label">{props.title}</label>
       </div>
       <div class="col-9">
-        <input class="form-input mb-1" type="date" id={props.id+"-date"} />
-        <input class="form-input" type="time" id={props.id+"-time"} />
+        <input class="form-input mb-1" type="date" name={props.id+"-date"} />
+        <input class="form-input" type="time" name={props.id+"-time"} />
       </div>
     </div>
   );
@@ -34,7 +34,7 @@ function InputRow(props){
         <label class="form-label">{props.title}</label>
       </div>
       <div class="col-9">
-        <input id={props.id} class="form-input" type={props.type} />
+        <input name={props.id} class="form-input" type={props.type} />
       </div>
     </div>
   );
@@ -51,15 +51,37 @@ class Sell extends React.Component {
     super(props);
     this.state = {
       open: false,
+      sending: false,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   handleSubmit(event){
     this.setState({ open: true });
     event.preventDefault();
+  }
+
+  async submit(){
+    let formdata = new FormData(document.getElementById("sell-form"));
+    this.setState({
+      open: false,
+      sending: true,
+    });
+    let data = {
+
+    };
+    let res = await api.put("/tx/delivery/", data);
+    this.setState({
+      sending: false, 
+    });
+    if (res.msg != "passed"){
+      alert("Failed to sell.")
+    } else{
+      this.props.submit();
+    }
   }
 
   handleClose(){
@@ -81,7 +103,7 @@ class Sell extends React.Component {
           <h1>Sell Eletricity</h1>
         </div>
         <div class="container grid-sm">
-          <form class="form-horizonal" onSubmit={this.handleSubmit}>
+          <form class="form-horizonal" id="sell-form" onSubmit={this.handleSubmit}>
             <InputRow title="Value(kWh):" id="value" type="number" />
             <InputRow title="Price(￥):" id="price" type="number" />
             <DatetimePicker id="start" title="Start:" />
@@ -94,7 +116,7 @@ class Sell extends React.Component {
         </div>
 
         <ConfirmDialog
-          yes={()=>props.submit()}
+          yes={()=>this.submit()}
           no={()=>this.handleClose()}
           title={"Are you sure?"}
           open={this.state.open}

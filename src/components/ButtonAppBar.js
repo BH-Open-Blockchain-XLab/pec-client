@@ -5,6 +5,7 @@ import {push, goBack, go} from 'connected-react-router';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import api from "../jsonapi";
 
 import ACTION from '../actions';
 
@@ -46,6 +47,11 @@ let dispatchMap = (dispatch) => (bindActionCreators(
     goBack: () => goBack(),
     logout: () => (
       (dispatch)=>{
+        let id = localStorage.getItem('sessionId');
+        api.delete("/usr/logout", {
+          sessionId: id,
+          msg: "logout",
+        });
         localStorage.removeItem('sessionId');
         dispatch(ACTION.logout());
         dispatch(push("/"));

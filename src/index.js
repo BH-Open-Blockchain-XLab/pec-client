@@ -7,6 +7,8 @@ import {Route, Link, Switch} from "react-router-dom";
 import {Provider} from 'react-redux';
 import {ConnectedRouter} from 'connected-react-router';
 
+import api from './jsonapi';
+
 import {
   Dashboard,
   Buy,
@@ -21,10 +23,17 @@ import {PlainAppBar} from './components';
 import {default as store, history} from './store';
 import ACTION from './actions';
 
-let sessionId = localStorage.getItem('sessionId');
-if (sessionId != null){
-  store.dispatch(ACTION.login(sessionId));
+async function initialLogin(){
+  let sessionId = localStorage.getItem('sessionId');
+  if (sessionId != null){
+    let res = await api.get("/usr/alive/alive/" + sessionId);
+    if(res.msg == "alive" && !store.getState().signin.isLoggedIn){
+      store.dispatch(ACTION.login(sessionId));
+    }
+  }
 }
+
+initialLogin();
 
 const App = ({history}) => (
   <ConnectedRouter history={history}>

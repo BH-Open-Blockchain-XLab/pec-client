@@ -71,9 +71,15 @@ class Buy extends React.Component{
       dialogOpen: false,
     });
   }
-  submitPurchase(tx){
+  async submitPurchase(tx){
     //async fetch
+    res = await api.post('/tx/purchase', {
+      txhash: [
+        res.txhash,
+      ],
+    });
     this.handleClose();
+    this.refresh();
   }
 
   async refresh(){
