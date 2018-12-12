@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {ButtonAppBar} from '../components';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
+import api from '../jsonapi';
 
 class TxHistory extends React.Component{
   constructor(props){
@@ -85,9 +86,10 @@ class Account extends React.Component{
   }
 
   async refresh(){
-    const url = "/usr/account/msgInfo/" + this.props.sessionID;
+    const url = "/usr/account/accountInfo/" + this.props.sessionId;
+    let res;
     try{
-      let res = await api.get(url); 
+      res = await api.get(url); 
     } catch(e) {
       return;
     }
@@ -97,15 +99,15 @@ class Account extends React.Component{
       this.setState({
         loading: false,
         txList: list, 
-        account: res,account,
+        account: res.account,
         balance: res.balance,
       });
     }
   }
 
   componentDidMount(){
-    refresh();
-    this.autoRefresh = setInteval(()=>this.refresh(), 30000);
+    this.refresh();
+    this.autoRefresh = setInterval(()=>this.refresh(), 30000);
   }
 
   componentWillUnmount(){
@@ -118,7 +120,12 @@ class Account extends React.Component{
     const props = this.props;
 
     if (this.state.loading){
-      return (<div class="loading loading-lg"></div>);
+      return (
+        <div>
+          <ButtonAppBar title="Account" noReturn={false} /> 
+          <div class="loading loading-lg"></div>)
+        </div>
+      );
     }
     if (!props.isLoggedIn) {
       return (
@@ -130,7 +137,7 @@ class Account extends React.Component{
         <ButtonAppBar title="Account" noReturn={false} /> 
         <div class="container grid-sm">
           <div class="text-center">
-            <h3>User</h3>
+            <h3>{this.state.account}</h3>
           </div>
           <div class="text-center">
             <h2><b>Balance:</b> {this.state.balance}</h2>

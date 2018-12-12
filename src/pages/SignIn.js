@@ -55,7 +55,7 @@ class SignIn extends React.Component {
       }
     } catch(e){
       this.setState({
-        isLoggin: false, 
+        isLogging: false, 
       });
       alert("Login failed.")
     }

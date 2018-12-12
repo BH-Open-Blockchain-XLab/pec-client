@@ -26,9 +26,10 @@ import ACTION from './actions';
 async function initialLogin(){
   let sessionId = localStorage.getItem('sessionId');
   if (sessionId != null){
+    store.dispatch(ACTION.login(sessionId));
     let res = await api.get("/usr/alive/alive/" + sessionId);
     if(res.msg == "alive" && !store.getState().signin.isLoggedIn){
-      store.dispatch(ACTION.login(sessionId));
+      store.dispatch(ACTION.logout());
     }
   }
 }
