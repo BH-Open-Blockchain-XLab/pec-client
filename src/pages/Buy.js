@@ -7,11 +7,6 @@ import {connect} from 'react-redux';
 
 import api from '../jsonapi';
 
-let waitList = [
-  {value: 10, name: "Alice"},
-  {value: 20, name: "Bob"},
-];
-
 class TxCard extends React.Component{
   constructor(props){
     super(props);
@@ -51,33 +46,46 @@ class Buy extends React.Component{
     super(props);
     this.state = {
       dialogOpen: false,
-      dialogAction: ()=>null,
       txList: [],
     };
     this.handleBuy = this.handleBuy.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.submitPurchase = this.handleClose.bind(this);
+    this.submitPurchase = this.submitPurchase.bind(this);
     this.refresh = this.refresh.bind(this);
   }
 
   handleBuy(tx){
     this.setState({
       dialogOpen: true,
-      dialogAction: ()=>this.submitPurchase(tx),
+      txToBuy: tx,
     });
+    console.log(tx);
   }
   handleClose(){
+    console.log("clos");
     this.setState({
       dialogOpen: false,
     });
   }
-  async submitPurchase(tx){
+  async submitPurchase(){
     //async fetch
-    res = await api.post('/tx/purchase', {
-      txhash: [
-        res.txhash,
-      ],
-    });
+    let tx = this.state.txToBuy;
+    console.log("submit");
+    try {
+      let res = await api.put('/tx/purchase', {
+        sessionID: this.props.sessionId,
+        msg: "purchase",
+        timestampBuy: Date.now(),
+        tx: [{
+          txHash: tx.txHash,
+        }],
+      });
+      if (!res || res.msg == "failed"){
+        throw new Error("purchase invalid");
+      }
+    } catch(e) {
+      alert("Purchase failed");
+    }
     this.handleClose();
     this.refresh();
   }
@@ -85,10 +93,8 @@ class Buy extends React.Component{
   async refresh(){
     let res;
     try{
-      res = await api.get('/tx/pool/' + this.props.sessionToken); 
-      console.log(res);
+      res = await api.get('/tx/pool/poolInfo/' + this.props.sessionId); 
     } catch(e){
-      console.log(e);
       return;
     }
     this.setState({
@@ -98,7 +104,7 @@ class Buy extends React.Component{
 
   componentDidMount(){
     this.refresh();
-    this.autoRefresh = setInterval(()=>this.refresh(), 60000);
+    this.autoRefresh = setInterval(()=>this.refresh(), 6000);
   }
 
   componentWillUnmount(){
@@ -131,8 +137,8 @@ class Buy extends React.Component{
         <ConfirmDialog 
           title={"Are you sure?"}
           open={this.state.dialogOpen}
-          yes={this.state.dialogAction}
-          no={this.handleClose}
+          yes={() => this.submitPurchase()}
+          no={() => this.handleClose()}
         />
       </div>
     );
@@ -141,7 +147,7 @@ class Buy extends React.Component{
 
 let stateMap = (state) => {return ({
   isLoggedIn: state.signin.isLoggedIn,
-  sessionToken: state.signin.sessionToken,
+  sessionId: state.signin.sessionToken,
 });};
 
 export default connect(stateMap)(Buy);

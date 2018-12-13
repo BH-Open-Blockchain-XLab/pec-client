@@ -28,7 +28,7 @@ async function initialLogin(){
   if (sessionId != null){
     store.dispatch(ACTION.login(sessionId));
     let res = await api.get("/usr/alive/alive/" + sessionId);
-    if(res.msg == "alive" && !store.getState().signin.isLoggedIn){
+    if(res.msg != "alive" && store.getState().signin.isLoggedIn){
       store.dispatch(ACTION.logout());
     }
   }

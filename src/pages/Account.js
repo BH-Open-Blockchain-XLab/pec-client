@@ -18,11 +18,11 @@ class TxHistory extends React.Component{
       <React.Fragment> 
         <div class="columns my-1">      
           <div class="col-6 pl-2"> 
-            <span>{tx.value + ' kWh @ ￥' + tx.price}</span> 
+            <span>{tx.amount + ' kWh @ ￥' + tx.value}</span> 
           </div>
           <div class="col-4">
             <span class="">
-              {(tx.typename=='sell') ? "To" : "From"}: {tx.name}
+              {(tx.typename=='sell') ? "To" : "From"}: {tx.user}
             </span> 
           </div>
           <div class="col-2">
@@ -42,6 +42,7 @@ function processList(res){
   let list = [];
   for (let d in res.delivery){
     let tx = {
+      txType: "sell",
       status: d.status,
       time: d.timestampSell,
       value: d.value,
@@ -49,10 +50,11 @@ function processList(res){
       type: d.type,
       user: d.to,
     };
-    list.append(tx);
+    list.push(tx);
   }
   for(let d in res.purchase){
     let tx = {
+      txType: "buy",
       status: d.status,
       time: d.timestampBuy,
       value: d.value,
@@ -60,7 +62,7 @@ function processList(res){
       type: d.type,
       user: d.from,
     };
-    list.append(tx);
+    list.push(tx);
   }
 
   list.sort((a, b) => {

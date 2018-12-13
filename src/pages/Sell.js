@@ -9,6 +9,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {replace} from 'connected-react-router';
 
+import api from "../jsonapi";
+
 function DatetimePicker(props){ 
   return (
     <div class="form-group columns my-2">
@@ -45,6 +47,23 @@ InputRow.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
+function txToSell(formdata, sessionId){
+  let data = {
+    sessionId,
+    msg: "delivery",
+    timestampSell: Date.now(),
+    tx: [{
+        value: formdata.get("price"),
+        amount: formdata.get("value"),
+        type: "wind",
+        inputData: "none",
+      }
+    ],
+  }
+
+  return data;
+}
+
 
 class Sell extends React.Component {
   constructor(props){
@@ -70,17 +89,21 @@ class Sell extends React.Component {
       open: false,
       sending: true,
     });
-    let data = {
-
-    };
-    let res = await api.put("/tx/delivery/", data);
-    this.setState({
-      sending: false, 
-    });
-    if (res.msg != "passed"){
-      alert("Failed to sell.")
-    } else{
-      this.props.submit();
+  
+    let data = txToSell(formdata, this.props.sessionId);
+    let res;
+    try {
+      let res = await api.post("/tx/delivery/", data);
+      this.setState({
+        sending: false, 
+      });
+      if (!res || res.msg == "failed"){
+        throw new Error("sell failed");
+      } else{
+        this.props.submit();
+      }
+    } catch(e) {
+      alert("Failed to sell.");
     }
   }
 
@@ -134,6 +157,7 @@ let dispatchMap = (dispatch) => bindActionCreators(
 );
 let stateMap = (state) => {return ({
   isLoggedIn: state.signin.isLoggedIn,
+  sessionId: state.signin.sessionToken,
 });};
 
 Sell = connect(stateMap, dispatchMap)(Sell);
