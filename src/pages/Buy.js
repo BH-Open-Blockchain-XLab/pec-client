@@ -22,7 +22,7 @@ class TxCard extends React.Component{
           {tx.amount + ' kWh'} 
         </div>
         <div class="col-6 col-mx-auto text-center">
-          {'Power from ' + tx.from}
+          {'Price: ￥' + tx.value}
         </div> 
         <div class="col-2 col-mx-auto text-center">
           <button class="btn" onClick={()=>props.buy()}>
@@ -59,10 +59,8 @@ class Buy extends React.Component{
       dialogOpen: true,
       txToBuy: tx,
     });
-    console.log(tx);
   }
   handleClose(){
-    console.log("clos");
     this.setState({
       dialogOpen: false,
     });
@@ -70,10 +68,9 @@ class Buy extends React.Component{
   async submitPurchase(){
     //async fetch
     let tx = this.state.txToBuy;
-    console.log("submit");
     try {
       let res = await api.put('/tx/purchase', {
-        sessionID: this.props.sessionId,
+        sessionId: this.props.sessionId,
         msg: "purchase",
         timestampBuy: Date.now(),
         tx: [{

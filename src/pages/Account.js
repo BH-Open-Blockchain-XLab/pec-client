@@ -22,7 +22,7 @@ class TxHistory extends React.Component{
           </div>
           <div class="col-4">
             <span class="">
-              {(tx.typename=='sell') ? "To" : "From"}: {tx.user}
+              {tx.txType}
             </span> 
           </div>
           <div class="col-2">
@@ -39,8 +39,9 @@ TxHistory.propTypes = {
 };
 
 function processList(res){
+  
   let list = [];
-  for (let d in res.delivery){
+  for (let d of res.delivery){
     let tx = {
       txType: "sell",
       status: d.status,
@@ -52,7 +53,7 @@ function processList(res){
     };
     list.push(tx);
   }
-  for(let d in res.purchase){
+  for(let d of res.purchase){
     let tx = {
       txType: "buy",
       status: d.status,
