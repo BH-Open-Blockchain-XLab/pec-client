@@ -15,6 +15,7 @@ import {
   Sell,
   Account,
   SignIn,
+  SignUp,
   Entrance
 } from './pages';
 
@@ -42,6 +43,7 @@ const App = ({history}) => (
       <Switch>
         <Route exact path="/" component={Entrance} />
         <Route path="/signin/" component={SignIn} />
+        <Route path="/signup/" component={SignUp} />
         <Route path="/dashboard/" component={Dashboard} />
         <Route path="/account/" component={Account} />
         <Route path="/buy/" component={Buy} />

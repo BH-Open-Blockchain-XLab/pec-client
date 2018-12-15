@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {replace} from 'connected-react-router';
-import {Redirect, Link} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 import api from '../jsonapi';
 import ACTION from '../actions';
+import {ButtonAppBar} from '../components';
 
 
 function Button(props){
@@ -19,7 +20,7 @@ function Button(props){
 
   return ( 
     <button class="btn" type="submit">
-      Sign in
+      Sign Up 
     </button>
   );
 }
@@ -27,37 +28,37 @@ Button.propTypes = {
   isLoggin: PropTypes.bool.isRequired,
 };
 
-class SignIn extends React.Component {
+class SignUp extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      isLogging: false,
+      isSigning: false,
     };
-    this.handleLogin = this.handleLogin.bind(this);
+    this.handleSignup = this.handleSignup.bind(this);
   }
 
-  async handleLogin(event, self) {
+  async handleSignup(event, self) {
     event.preventDefault();
-    let formdata = new FormData(document.getElementById('signin-form')); 
-    let logindata = {
+    let formdata = new FormData(document.getElementById('signup-form')); 
+    let signupdata = {
       account: formdata.get('account'),
       password: formdata.get('password'),
     }; 
     self.setState({
-      isLogging: true, 
+      isSigning: true, 
     });
     try {
-      let res = await api.post('/usr/login', logindata);
-      if(res['msg'] == 'passed'){
-        self.props.login(res["sessionId"]);
+      let res = await api.post('/usr/signup', signupdata);
+      if(res['msg'] == 'succeed'){
+        self.props.signup();
       } else{
-        throw new Error("Login failed");
+        throw new Error("Signup failed");
       }
     } catch(e){
       this.setState({
-        isLogging: false, 
+        isSigning: false, 
       });
-      alert("Login failed.")
+      alert("Signup failed.")
     }
   }
 
@@ -68,14 +69,15 @@ class SignIn extends React.Component {
 
     return (
       <div>
+        <ButtonAppBar noReturn={false} title="Sign Up" />
         <h1 class="text-center">
-          Sign in
+          Sign up
         </h1>
         <div class="container grid-sm">
           <form 
-            class="column col-sm-12 col-mx-auto"
-            id="signin-form"
-            onSubmit={(e)=>this.handleLogin(e, this)}   
+            class="column col-6 col-sm-12 col-mx-auto"
+            id="signup-form"
+            onSubmit={(e)=>this.handleSignup(e, this)}   
           >
             <div class="form-group">
               <div class="form-label" for="account">Username</div>
@@ -85,9 +87,8 @@ class SignIn extends React.Component {
               <div class="form-label" for="password">Password</div>
               <input class="form-input" type="password" name="password" placeholder="password" />
             </div>
-            <div><Link to="/signup">Create a account</Link></div>
             <div class="text-right">
-              <Button isLogging={this.state.isLogging} />
+              <Button isSigning={this.state.isSigning} />
             </div>
           </form>
         </div>
@@ -104,16 +105,10 @@ let stateMap = (state) => {
 
 let dispatchMap = (dispatch) => bindActionCreators(
   {
-    login: (token)=>(
-      (dispatch) => {
-        dispatch(ACTION.login(token));
-        dispatch(replace('/dashboard/'));
-        localStorage.setItem('sessionId', token);
-      }
-    ),
+    signup: ()=>replace('/login/'),
   },
   dispatch
 );
 
-SignIn = connect(stateMap, dispatchMap)(SignIn);
-export default SignIn;
+SignUp = connect(stateMap, dispatchMap)(SignUp);
+export default SignUp;
