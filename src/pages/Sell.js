@@ -129,8 +129,6 @@ class Sell extends React.Component {
           <form class="form-horizonal" id="sell-form" onSubmit={this.handleSubmit}>
             <InputRow title="Value(kWh):" id="value" type="number" />
             <InputRow title="Price(￥):" id="price" type="number" />
-            <DatetimePicker id="start" title="Start:" />
-            <DatetimePicker id="end" title="End:" />
 
             <div class="text-right"> 
               <button type="submit" class="btn btn-primary">Sell</button>
