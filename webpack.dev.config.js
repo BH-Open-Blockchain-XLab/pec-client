@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -48,11 +49,14 @@ module.exports = {
             template: './src/index.html',
             filename: 'index.html',
         }),
-        new CleanWebpackPlugin(['dev/*.js', 'dev/*.html']),
+        new CleanWebpackPlugin(['dev/*.js', 'dev/*.html', 'dev/static']),
         new webpack.DllReferencePlugin({
           context: __dirname,
           manifest: require('./dev/library/lib.json'),
         }),
+        new CopyWebpackPlugin([
+            { from: 'static' }
+        ])
     ],
     output: {
         filename: '[name].[contenthash].js',

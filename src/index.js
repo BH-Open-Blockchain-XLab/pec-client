@@ -1,4 +1,3 @@
-import "./scss/main.scss";
 import "@babel/polyfill";
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -6,6 +5,7 @@ import {Route, Link, Switch} from "react-router-dom";
 
 import {Provider} from 'react-redux';
 import {ConnectedRouter} from 'connected-react-router';
+import "./scss/main.scss";
 
 import api from './jsonapi';
 
@@ -61,11 +61,3 @@ ReactDOM.render((
  document.getElementById('root')
 );
 
-/*
-        <Route path="/" exact component={Entrance} />
-        <Route path="/signin/" component={SignIn} />
-        <Route path="/dashboard/" component={Dashboard} />
-        <Route path="/buy/" component={Buy} />
-        <Route path="/sell/" component={Sell} />
-        <Route path="/account/" component={Account} />
-*/
