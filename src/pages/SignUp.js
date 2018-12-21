@@ -13,8 +13,7 @@ import {ButtonAppBar} from '../components';
 function Button(props){
   if (props.isLogging){
     return(
-      <button class="btn btn-link loading" onClick={undefined}>
-      </button>
+      <button class="btn btn-link loading" onClick={undefined}></button>
     );
   }
 
@@ -69,29 +68,35 @@ class SignUp extends React.Component {
 
     return (
       <div>
-        <ButtonAppBar noReturn={false} title="Sign Up" />
-        <h1 class="text-center">
-          Sign up
-        </h1>
+
+        <AppBar noButton />
+
         <div class="container grid-sm">
-          <form 
-            class="column col-6 col-sm-12 col-mx-auto"
-            id="signup-form"
-            onSubmit={(e)=>this.handleSignup(e, this)}   
-          >
-            <div class="form-group">
-              <div class="form-label" for="account">Username</div>
-              <input class="form-input" type="text" name="account" placeholder="Username" />
+          <div class="columns">
+            <div class="column col-12 col-mx-auto mt-100px px-20px">
+              <form class="card"
+                    id="signup-form"
+                    onSubmit={(e)=>this.handleSignup(e, this)}   
+              >
+                <div class="card-header h2">Sign In</div>
+                <div class="card-body">
+                  <input class="form-input mb-20px"
+                         type="text"
+                         name="account"
+                         placeholder="Username"
+                  />
+                  <input class="form-input mb-20px"
+                         type="password"
+                         name="account"
+                         placeholder="Password"
+                  />
+                  <Button isLoading={this.state.isSigning} />
+                </div>
+              </form>
             </div>
-            <div class="form-group">
-              <div class="form-label" for="password">Password</div>
-              <input class="form-input" type="password" name="password" placeholder="password" />
-            </div>
-            <div class="text-right">
-              <Button isSigning={this.state.isSigning} />
-            </div>
-          </form>
+          </div> 
         </div>
+
       </div>
     );
   }
