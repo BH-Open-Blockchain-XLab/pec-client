@@ -64,7 +64,7 @@ class SignIn extends React.Component {
 
   render(){
     if (this.props.isLoggedIn){
-      return (<Redirect to="/dashboard/" />);
+      return (<Redirect to="/account/" />);
     }
 
     return (
@@ -115,7 +115,7 @@ let dispatchMap = (dispatch) => bindActionCreators(
     login: (token)=>(
       (dispatch) => {
         dispatch(ACTION.login(token));
-        dispatch(replace('/dashboard/'));
+        dispatch(replace('/account/'));
         localStorage.setItem('sessionId', token);
       }
     ),

@@ -5,6 +5,7 @@ import {ButtonAppBar} from '../components';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import api from '../jsonapi';
+import {logout} from '../thunks';
 
 class TxHistory extends React.Component{
   constructor(props){
@@ -137,7 +138,7 @@ class Account extends React.Component{
     }
     return (
       <div>
-        <ButtonAppBar title="Account" noReturn={false} /> 
+        <AppBar buttonLabel="LOGOUT" action={()=>props.logout()} /> 
         <div class="container grid-sm">
           <div class="text-center">
             <h3>{this.state.account}</h3>
@@ -157,6 +158,7 @@ class Account extends React.Component{
 let stateMap = (state) => ({
   isLoggedIn: state.signin.isLoggedIn,
   sessionId: state.signin.sessionToken,
+  logout,
 });
 
 export default connect(stateMap)(Account);
