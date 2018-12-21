@@ -10,21 +10,22 @@ import ACTION from '../actions';
 
 
 function Button(props){
-  if (props.isLogging){
+  if (props.isLoading){
     return(
-      <button class="btn btn-link loading" onClick={undefined}>
-      </button>
+      <div class="text-right">
+         <button class="btn loading" type="submit" onClick={undefined}>Sign In</button>
+      </div>
     );
   }
 
   return ( 
-    <button class="btn" type="submit">
-      Sign in
-    </button>
+    <div class="text-right">
+       <button class="btn" type="submit">Sign In</button>
+    </div>
   );
 }
 Button.propTypes = {
-  isLoggin: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 class SignIn extends React.Component {
@@ -68,29 +69,36 @@ class SignIn extends React.Component {
 
     return (
       <div>
-        <h1 class="text-center">
-          Sign in
-        </h1>
+
+        <AppBar noButton />
+
         <div class="container grid-sm">
-          <form 
-            class="column col-sm-12 col-mx-auto"
-            id="signin-form"
-            onSubmit={(e)=>this.handleLogin(e, this)}   
-          >
-            <div class="form-group">
-              <div class="form-label" for="account">Username</div>
-              <input class="form-input" type="text" name="account" placeholder="Username" />
+          <div class="columns">
+            <div class="column col-12 col-mx-auto mt-100px px-20px">
+              <form class="card"
+                    id="signin-form"
+                    onSubmit={(e)=>this.handleLogin(e, this)}   
+              >
+                <div class="card-header h2">Sign In</div>
+                <div class="card-body">
+                  <input class="form-input mb-20px"
+                         type="text"
+                         name="account"
+                         placeholder="Username"
+                  />
+                  <input class="form-input mb-20px"
+                         type="password"
+                         name="account"
+                         placeholder="Password"
+                  />
+                  <div><Link to="/signup">Create a account</Link></div>
+                  <Button isLoading={this.state.isLogging} />
+                </div>
+              </form>
             </div>
-            <div class="form-group">
-              <div class="form-label" for="password">Password</div>
-              <input class="form-input" type="password" name="password" placeholder="password" />
-            </div>
-            <div><Link to="/signup">Create a account</Link></div>
-            <div class="text-right">
-              <Button isLogging={this.state.isLogging} />
-            </div>
-          </form>
+          </div> 
         </div>
+
       </div>
     );
   }
