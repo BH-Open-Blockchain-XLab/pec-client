@@ -1,3 +1,41 @@
-@import "../../node_modules/spectre.css/src/spectre";
-@import "../../node_modules/spectre.css/src/spectre-icons";
+@import "../../node_modules/spectre.css/src/spectre.scss";
+$fa-font-path: "../../node_modules/@fortawesome/fontawesome-free/webfonts";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/brands.scss";
+
+@import "./_position.scss";
+@import "./_size.scss";
+@import "./_color.scss";
+
+.c-indexBody {
+  background-color: black;
+  background-image: url("/images/bg.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.c-appMain {
+  min-height: 736px;
+}
+
+.c-bottomButtonDiv {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 100px;
+  overflow: hidden;
+}
+
+.c-bottomButton {
+  max-width: 100px;
+}
+
+.c-appContainer {
+  max-width: 676px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
 
