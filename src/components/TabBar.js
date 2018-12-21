@@ -31,7 +31,7 @@ class TabBar extends React.Component {
           {pages.map(
             (page) => {
               return (
-                <li class={props.active == page.name ? ("tab-item active") : ("tab-item")>
+                <li class={props.active == page.name ? ("tab-item active") : ("tab-item")}>
                   <Link to={page.link}>{page.name}</a>
                 </li>
               );
@@ -46,3 +46,5 @@ class TabBar extends React.Component {
 TabBar.propTypes = {
   active: PropTypes.string.isRequired,
 };
+
+export default TabBar;
