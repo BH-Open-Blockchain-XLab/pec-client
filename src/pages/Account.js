@@ -1,78 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {ButtonAppBar} from '../components';
+import {AppBar, TabBar, TxTile} from '../components';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import api from '../jsonapi';
 import {logout} from '../thunks';
 
-class TxHistory extends React.Component{
-  constructor(props){
-    super(props);
-  }
-
-  render(){
-    const {tx} = this.props;
-
-    return (
-      <React.Fragment> 
-        <div class="columns my-1">      
-          <div class="col-6 pl-2"> 
-            <span>{tx.amount + ' kWh @ ￥' + tx.value}</span> 
-          </div>
-          <div class="col-4">
-            <span class="">
-              {tx.txType}
-            </span> 
-          </div>
-          <div class="col-2">
-            <button class="btn">Details</button>
-          </div>
+function AccountInfo(props) {
+  return (
+    <div class="p-20px m-20px">
+      <div class="">
+         <i class="fas fa-user"></i> <b>Account Information</b>
+      </div>
+      <div class="bg-white p-20px my-2">
+        <div class="columns py-1">
+           <div class="column col-5">Username:</div>
+           <div class="column col-7">{props.username}</div>
         </div>
-      </React.Fragment>
-    );
-  }
+        <div class="columns py-1">
+           <div class="column col-5">Balance:</div>
+           <div class="column col-7">{props.balance}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+AccountInfo.propTypes = {
+  username: PropTypes.string.isRequired,
+  balance: PropTypes.number.isRequired,
 };
 
-TxHistory.propTypes = {
-  tx: PropTypes.object.isRequired,
-};
+function PurchaseDetails(props) {
+  return (
+    <button class="btn btn-link">
+      <i class="fas fa-caret-down"></i>
+    </button>
+  );
+}
 
-function processList(res){
-  
-  let list = [];
-  for (let d of res.delivery){
-    let tx = {
-      txType: "sell",
-      status: d.status,
-      time: d.timestampSell,
-      value: d.value,
-      amount: d.amount,
-      type: d.type,
-      user: d.to,
-    };
-    list.push(tx);
-  }
-  for(let d of res.purchase){
-    let tx = {
-      txType: "buy",
-      status: d.status,
-      time: d.timestampBuy,
-      value: d.value,
-      amount: d.amount,
-      type: d.type,
-      user: d.from,
-    };
-    list.push(tx);
-  }
-
-  list.sort((a, b) => {
-    if (a.time > b.time) return -1;
-    if (a.time = b.time) return 0;
-    if (a.time < b.time) return 1;
-  });
-  return list;
+function DelieveryDetails(props) {
+  return (
+    <button class="btn btn-link">
+      <i class="fas fa-caret-down"></i>
+    </button>
+  );
 }
 
 class Account extends React.Component{
@@ -81,9 +53,10 @@ class Account extends React.Component{
 
     this.state = {
       loading: true,
-      txList: [],
+      delievery: [],
+      purchase: [],
       balance: "--",
-      account: "--"
+      account: "--",
     };
 
     this.refresh = this.refresh.bind(this);
@@ -99,10 +72,10 @@ class Account extends React.Component{
     }
 
     if(res && res["msg"] != "failed"){
-      let list = processList(res);
       this.setState({
         loading: false,
-        txList: list, 
+        purchase: res.purchase, 
+        delievery: res.delievery,
         account: res.account,
         balance: res.balance,
       });
@@ -139,16 +112,43 @@ class Account extends React.Component{
     return (
       <div>
         <AppBar buttonLabel="LOGOUT" action={()=>props.logout()} /> 
-        <div class="container grid-sm">
-          <div class="text-center">
-            <h3>{this.state.account}</h3>
+        <div class="c-appContainer pt-50px">
+          <div class="panel mt-20px c-appMain">
+            <TabBar active="Account" />
           </div>
-          <div class="text-center">
-            <h2><b>Balance:</b> {this.state.balance}</h2>
+
+          <AccountInfo name={this.state.account} balance={this.state.balance} />
+
+          <div class="p-20px m-20px">
+            <div class="">
+               <i class="fas fa-cart-arrow-down"></i> <b>Purchases</b>
+            </div>
+            <div class="bg-white p-20px my-2">
+              {this.state.purchase.map(
+                (tx) => (
+                  <TxTile key={JSON.stringify(tx)} tx={tx} action={(
+                    <PurchaseDetail /> 
+                  )} />
+                )
+              )} 
+            </div>
           </div>
-          {this.state.txList.map(tx => (
-            <TxHistory tx={tx} key={JSON.stringify(tx)} />
-          ))}     
+
+          <div class="p-20px m-20px">
+            <div class="">
+              <i class="fas fa-truck"></i> <b>Delieveries</b>
+            </div>
+            <div class="bg-white p-20px my-2">
+              {this.state.purchase.map(
+                (tx) => (
+                  <TxTile key={JSON.stringify(tx)} tx={tx} action={(
+                    <DelieveryDetail /> 
+                  )} />
+                )
+              )} 
+            </div>
+          </div>
+
         </div>
       </div>
     );
@@ -158,7 +158,12 @@ class Account extends React.Component{
 let stateMap = (state) => ({
   isLoggedIn: state.signin.isLoggedIn,
   sessionId: state.signin.sessionToken,
-  logout,
 });
 
-export default connect(stateMap)(Account);
+let dispatchMap = (dispatch) => bindActionCreators{{
+    logout,
+  },
+  dispatch
+};
+
+export default connect(stateMap, dispatchMap)(Account);
