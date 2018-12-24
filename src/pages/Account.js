@@ -141,9 +141,9 @@ class Account extends React.Component{
             <div class="bg-white p-20px my-2">
               {this.state.purchase.map(
                 (tx) => (
-                  <TxTile key={JSON.stringify(tx)} tx={tx} action={(
+                  <TxTile key={JSON.stringify(tx)} tx={tx}>
                     <DelieveryDetail /> 
-                  )} />
+                  </TxTile>
                 )
               )} 
             </div>
