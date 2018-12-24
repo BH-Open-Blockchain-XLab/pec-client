@@ -39,7 +39,7 @@ class TxTile extends React.Component {
           <small class="tile-subtitle text-gray">￥{props.tx.value} · {this.date} · {this.time}</small>
         </div>
         <div class="tile-action">
-          {props.action}
+          {props.children}
         </div>
       </div>
     );
@@ -47,7 +47,6 @@ class TxTile extends React.Component {
 }
 TxTile.propTypes = {
   tx: PropType.object.isRequired,
-  action: PropTypes.object.isRequried,
 };
 
 export default TxTile;
