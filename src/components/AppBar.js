@@ -24,7 +24,7 @@ class AppBar extends React.Component{
  }
 }
 
-ButtonAppBar.propTypes = {
+AppBar.propTypes = {
   action: PropTypes.func,
   buttonLabel: PropTypes.string,
 };

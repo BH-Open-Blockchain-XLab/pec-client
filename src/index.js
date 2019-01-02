@@ -10,7 +10,6 @@ import "./scss/main.scss";
 import api from './jsonapi';
 
 import {
-  Dashboard,
   Buy,
   Sell,
   Account,
@@ -29,9 +28,11 @@ async function initialLogin(){
   if (sessionId != null){
     store.dispatch(ACTION.login(sessionId));
     let res = await api.get("/usr/alive/alive/" + sessionId);
-    if(res.msg != "alive" && store.getState().signin.isLoggedIn){
-      store.dispatch(ACTION.logout());
+    if(res.msg == "alive"){
+      return;
     }
+    console.log("session not valid");
+    store.dispatch(ACTION.logout());
   }
 }
 
@@ -44,7 +45,6 @@ const App = ({history}) => (
         <Route exact path="/" component={Entrance} />
         <Route path="/signin/" component={SignIn} />
         <Route path="/signup/" component={SignUp} />
-        <Route path="/dashboard/" component={Dashboard} />
         <Route path="/account/" component={Account} />
         <Route path="/buy/" component={Buy} />
         <Route path="/sell/" component={Sell} />

@@ -9,7 +9,8 @@ import {
 
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {logout} from '../thunks';
+import { logout } from '../thunks.js';
+import {bindActionCreators} from "redux";
 
 import api from '../jsonapi';
 
@@ -102,7 +103,7 @@ class Buy extends React.Component{
           <div class="p-20px m-20px">
             <div class="bg-white p-20px my-2">
               {txList.map(tx => (
-                <TxTile tx={tx} key={JSON.stringify(tx)} />
+                <TxTile tx={tx} key={JSON.stringify(tx)}>
                   <button class="btn btn-primary" onClick={()=>this.handleBuy(tx)}>
                     Buy
                   </button>

@@ -23,7 +23,15 @@ class Entrance extends React.Component {
     const props = this.props;
     return (
       <div>
-        <AppBar buttonLabel="LOGIN" action={()=>props.goToSignIn()} />
+        <div class="columns m-2">
+          <div class="column col-6 text-left">
+            <h2 class="header-title col-6 text-light">PowExChain</h2>
+          </div>
+          <div class="column col-6 text-right mt-5px">
+            <button class="btn btn-primary" onClick={()=>props.goToSignIn()}>LOGIN</button>
+          </div>
+        </div>
+
         <div class="container text-center mt-100px">
           <h1 class="text-light mt-50">Power the Future</h1>
         </div>
@@ -38,4 +46,4 @@ const dispatchMap = dispatch => bindActionCreators({
   dispatch
 );
 
-export default Entrance;
+export default connect(null, dispatchMap)(Entrance);

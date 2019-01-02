@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {AppBar, TabBar, TxTile} from '../components';
+import {bindActionCreators} from 'redux';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import api from '../jsonapi';
@@ -95,18 +96,22 @@ class Account extends React.Component{
 
   render(){
     const props = this.props;
-
-    if (this.state.loading){
-      return (
-        <div>
-          <ButtonAppBar title="Account" noReturn={false} /> 
-          <div class="loading loading-lg"></div>)
-        </div>
-      );
-    }
     if (!props.isLoggedIn) {
       return (
         <Redirect to="/signin/" />         
+      );
+    }
+    if (this.state.loading){
+      return (
+        <div>
+          <AppBar buttonLabel="LOGOUT" action={()=>props.logout()} /> 
+          <div class="c-appContainer pt-50px">
+            <div class="panel mt-20px c-appMain">
+              <TabBar active="Account" />
+              <div class="loading loading-lg mt-50px"></div>
+            </div>
+          </div>
+        </div>
       );
     }
     return (
@@ -160,10 +165,10 @@ let stateMap = (state) => ({
   sessionId: state.signin.sessionToken,
 });
 
-let dispatchMap = (dispatch) => bindActionCreators{{
+let dispatchMap = (dispatch) => bindActionCreators({
     logout,
   },
   dispatch
-};
+);
 
 export default connect(stateMap, dispatchMap)(Account);

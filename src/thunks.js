@@ -1,4 +1,4 @@
-const logout = (dispatch) => {
+export const logout = (dispatch) => {
   let id = localStorage.getItem('sessionId');
   api.delete("/usr/logout", {
     sessionId: id,
@@ -9,7 +9,3 @@ const logout = (dispatch) => {
   dispatch(push("/"));
 };
 
-
-export default {
-  logout,
-};

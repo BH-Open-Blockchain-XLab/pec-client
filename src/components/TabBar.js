@@ -32,7 +32,7 @@ class TabBar extends React.Component {
             (page) => {
               return (
                 <li class={props.active == page.name ? ("tab-item active") : ("tab-item")}>
-                  <Link to={page.link}>{page.name}</a>
+                  <Link to={page.link}>{page.name}</Link>
                 </li>
               );
             }

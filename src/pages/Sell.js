@@ -13,6 +13,7 @@ import {bindActionCreators} from 'redux';
 import {replace} from 'connected-react-router';
 
 import api from "../jsonapi";
+import {logout} from "../thunks";
 
 
 function Button(props){
@@ -45,7 +46,7 @@ function InputRow(props){
         <input class="form-input" type={props.type} id={props.id} placeholder={props.title} />
       </div>
     </div>
-  ;
+  );
 }
 InputRow.propTypes = {
   title: PropTypes.string.isRequired,
@@ -164,8 +165,6 @@ class Sell extends React.Component {
                 </div>
 
                 <Button isLoading={false} />
-
-                </div>
               </form>
           </div>
         </div>

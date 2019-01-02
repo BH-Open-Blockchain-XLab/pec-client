@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'props-types';
+import PropTypes from 'prop-types';
 
 function TileIcon(props) {
   let icon;
@@ -46,7 +46,7 @@ class TxTile extends React.Component {
   }
 }
 TxTile.propTypes = {
-  tx: PropType.object.isRequired,
+  tx: PropTypes.object.isRequired,
 };
 
 export default TxTile;
