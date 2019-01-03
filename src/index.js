@@ -36,7 +36,11 @@ async function initialLogin(){
   }
 }
 
-initialLogin();
+function init(){
+  initialLogin();
+}
+
+init();
 
 const App = ({history}) => (
   <ConnectedRouter history={history}>

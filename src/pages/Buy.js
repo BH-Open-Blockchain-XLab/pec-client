@@ -5,6 +5,7 @@ import {
   ConfirmDialog, 
   AppBar,
   TxTile,
+  TabBar,
 } from "../components";
 
 import {Redirect} from 'react-router-dom';
@@ -98,18 +99,21 @@ class Buy extends React.Component{
         
         <div class="c-appContainer pt-50px">
           <div class="panel mt-20px c-appMain">
+
             <TabBar active="Buy" />
-          </div>
-          <div class="p-20px m-20px">
-            <div class="bg-white p-20px my-2">
-              {txList.map(tx => (
-                <TxTile tx={tx} key={JSON.stringify(tx)}>
-                  <button class="btn btn-primary" onClick={()=>this.handleBuy(tx)}>
-                    Buy
-                  </button>
-                </TxTile>
-              ))}     
+
+            <div class="p-20px m-20px">
+              <div class="bg-white p-20px my-2">
+                {txList.map(tx => (
+                  <TxTile tx={tx} key={JSON.stringify(tx)}>
+                    <button class="btn btn-primary" onClick={()=>this.handleBuy(tx)}>
+                      Buy
+                    </button>
+                  </TxTile>
+                ))}     
+              </div>
             </div>
+
           </div>
         </div>
 
@@ -130,7 +134,7 @@ let stateMap = (state) => {return ({
 });};
 
 let dispatchMap = (dispatch) => bindActionCreators({
-  logout,
+  logout: ()=>logout,
 }, dispatch)
 
 export default connect(stateMap, dispatchMap)(Buy);

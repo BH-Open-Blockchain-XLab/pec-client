@@ -40,7 +40,7 @@ function PurchaseDetails(props) {
   );
 }
 
-function DelieveryDetails(props) {
+function DeliveryDetails(props) {
   return (
     <button class="btn btn-link">
       <i class="fas fa-caret-down"></i>
@@ -54,7 +54,7 @@ class Account extends React.Component{
 
     this.state = {
       loading: true,
-      delievery: [],
+      delivery: [],
       purchase: [],
       balance: "--",
       account: "--",
@@ -76,11 +76,12 @@ class Account extends React.Component{
       this.setState({
         loading: false,
         purchase: res.purchase, 
-        delievery: res.delievery,
+        delivery: res.delivery,
         account: res.account,
         balance: res.balance,
       });
     }
+    console.log(res);
   }
 
   componentDidMount(){
@@ -120,39 +121,40 @@ class Account extends React.Component{
         <div class="c-appContainer pt-50px">
           <div class="panel mt-20px c-appMain">
             <TabBar active="Account" />
+            <AccountInfo username={this.state.account} balance={this.state.balance} />
+
+            <div class="p-20px m-20px">
+              <div class="">
+                 <i class="fas fa-cart-arrow-down"></i> <b>Purchases</b>
+              </div>
+              <div class="bg-white p-20px my-2">
+                {this.state.purchase.map(
+                  (tx) => (
+                    <TxTile key={JSON.stringify(tx)} tx={tx} action={(
+                      <PurchaseDetails /> 
+                    )} />
+                  )
+                )} 
+              </div>
+            </div>
+
+            <div class="p-20px m-20px">
+              <div class="">
+                <i class="fas fa-truck"></i> <b>Delieveries</b>
+              </div>
+              <div class="bg-white p-20px my-2">
+                {this.state.delivery.map(
+                  (tx) => (
+                    <TxTile key={JSON.stringify(tx)} tx={tx}>
+                      <DeliveryDetails /> 
+                    </TxTile>
+                  )
+                )} 
+              </div>
+            </div>
+
           </div>
 
-          <AccountInfo name={this.state.account} balance={this.state.balance} />
-
-          <div class="p-20px m-20px">
-            <div class="">
-               <i class="fas fa-cart-arrow-down"></i> <b>Purchases</b>
-            </div>
-            <div class="bg-white p-20px my-2">
-              {this.state.purchase.map(
-                (tx) => (
-                  <TxTile key={JSON.stringify(tx)} tx={tx} action={(
-                    <PurchaseDetail /> 
-                  )} />
-                )
-              )} 
-            </div>
-          </div>
-
-          <div class="p-20px m-20px">
-            <div class="">
-              <i class="fas fa-truck"></i> <b>Delieveries</b>
-            </div>
-            <div class="bg-white p-20px my-2">
-              {this.state.purchase.map(
-                (tx) => (
-                  <TxTile key={JSON.stringify(tx)} tx={tx}>
-                    <DelieveryDetail /> 
-                  </TxTile>
-                )
-              )} 
-            </div>
-          </div>
 
         </div>
       </div>
@@ -166,7 +168,7 @@ let stateMap = (state) => ({
 });
 
 let dispatchMap = (dispatch) => bindActionCreators({
-    logout,
+    logout: ()=>logout,
   },
   dispatch
 );

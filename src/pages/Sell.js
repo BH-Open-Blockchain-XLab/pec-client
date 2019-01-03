@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import {
   AppBar, 
   ConfirmDialog,
+  TabBar,
 } from '../components';
 
 import {Redirect} from 'react-router-dom';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {replace} from 'connected-react-router';
+import {replace, push} from 'connected-react-router';
 
 import api from "../jsonapi";
 import {logout} from "../thunks";
@@ -43,7 +44,7 @@ function InputRow(props){
         <label class="form-label" for={props.id}>{props.title}</label>
       </div>
       <div class="col-9 col-sm-12">
-        <input class="form-input" type={props.type} id={props.id} placeholder={props.title} />
+        <input class="form-input" type={props.type} name={props.id} placeholder={props.title} />
       </div>
     </div>
   );
@@ -128,60 +129,49 @@ class Sell extends React.Component {
     }
     return ( 
       <div>
-        <AppBar title="Sell" action={props.logout()} />
+        <AppBar buttonLabel="LOGOUT" action={()=>props.logout()} /> 
 
         <div class="c-appContainer pt-50px">
           <div class="panel mt-20px c-appMain">
+            
             <TabBar active="Sell" />
+
+            <div class="p-20px m-20px">
+                <form class="card"
+                      id="sell-form"
+                      onSubmit={(event)=>this.handleSubmit(event)}   
+                >
+
+                  <div class="card-header h2">Sell Electricity</div>
+
+                  <div class="card-body form-horizontal">
+
+                    <InputRow title="Value(kWh):" id="value" type="number" />
+
+                    <InputRow title="Price(￥):" id="price" type="number" />
+
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="type">Type:</label>
+                      </div>
+                      <div class="col-9 col-sm-12">
+                        <select class="form-select" name="type">
+                          <option>Wind</option>
+                          <option>Solar</option>
+                          <option>Water</option>
+                        </select>
+                      </div>
+                    </div>
+                    <Button isLoading={false} />
+                  </div>
+
+
+                </form>
+            </div>
+
           </div>
           
         
-          <div class="p-20px m-20px">
-              <form class="card"
-                    id="sell-form"
-                    onSubmit={()=>this.handleSubmit()}   
-              >
-
-                <div class="card-header h2">Sell Electricity</div>
-
-                <div class="card-body form-horizontal">
-
-                  <InputRow title="Value(kWh):" id="value" type="number" />
-
-                  <InputRow title="Price(￥):" id="price" type="number" />
-
-                  <div class="form-group">
-                    <div class="col-3 col-sm-12">
-                      <label class="form-label" for="type">Type:</label>
-                    </div>
-                    <div class="col-9 col-sm-12">
-                      <select class="form-select" id="type">
-                        <option>Wind</option>
-                        <option>Solar</option>
-                        <option>Water</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <Button isLoading={false} />
-              </form>
-          </div>
-        </div>
-
-
-
-
-        <div class="text-center">
-          <h1>Sell Eletricity</h1>
-        </div>
-        <div class="container grid-sm">
-          <form class="form-horizonal" id="sell-form" onSubmit={this.handleSubmit}>
-
-            <div class="text-right"> 
-              <button type="submit" class="btn btn-primary">Sell</button>
-            </div>
-          </form>
         </div>
 
         <ConfirmDialog
@@ -197,8 +187,8 @@ class Sell extends React.Component {
 
 let dispatchMap = (dispatch) => bindActionCreators(
   {
-    submit: ()=>replace('/dashboard/'),
-    logout,
+    submit: ()=>replace('/account/'),
+    logout: ()=>logout,
   }, 
   dispatch
 );

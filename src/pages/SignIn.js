@@ -92,7 +92,7 @@ class SignIn extends React.Component {
                   />
                   <input class="form-input mb-20px"
                          type="password"
-                         name="account"
+                         name="password"
                          placeholder="Password"
                   />
                   <div><Link to="/signup">Create a account</Link></div>
