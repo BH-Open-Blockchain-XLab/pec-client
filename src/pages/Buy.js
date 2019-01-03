@@ -1,45 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {ConfirmDialog, ButtonAppBar} from "../components";
+import {
+  ConfirmDialog, 
+  AppBar,
+  TxTile,
+  TabBar,
+} from "../components";
+
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
+import { logout } from '../thunks.js';
+import {bindActionCreators} from "redux";
 
 import api from '../jsonapi';
-
-class TxCard extends React.Component{
-  constructor(props){
-    super(props);
-  }
-
-  render(){
-    const props = this.props;
-    const {tx} = this.props;
-    
-    return (
-      <div class="columns my-2"> 
-        <div class="col-4 col-mx-auto text-center">      
-          {tx.amount + ' kWh'} 
-        </div>
-        <div class="col-6 col-mx-auto text-center">
-          {'Price: ￥' + tx.value}
-        </div> 
-        <div class="col-2 col-mx-auto text-center">
-          <button class="btn" onClick={()=>props.buy()}>
-            Buy
-          </button>
-        </div>
-      </div>
-    );
-  }
-};
-
-
-TxCard.propTypes = {
-  tx: PropTypes.object.isRequired,
-  buy: PropTypes.func.isRequired,
-}
-
 
 class Buy extends React.Component{
   constructor(props){
@@ -121,16 +95,28 @@ class Buy extends React.Component{
     }
     return (
       <div>
-        <ButtonAppBar title="Buy" noReturn={false} /> 
-        <div class="container grid-sm">
-          {txList.map(tx => (
-            <TxCard 
-              tx={tx} 
-              key={JSON.stringify(tx)} 
-              buy={()=>this.handleBuy(tx)}
-            />
-          ))}     
+        <AppBar buttonLabel="LOGOUT" action={()=>props.logout()} /> 
+        
+        <div class="c-appContainer pt-50px">
+          <div class="panel mt-20px c-appMain">
+
+            <TabBar active="Buy" />
+
+            <div class="p-20px m-20px">
+              <div class="bg-white p-20px my-2">
+                {txList.map(tx => (
+                  <TxTile tx={tx} key={JSON.stringify(tx)}>
+                    <button class="btn btn-primary" onClick={()=>this.handleBuy(tx)}>
+                      Buy
+                    </button>
+                  </TxTile>
+                ))}     
+              </div>
+            </div>
+
+          </div>
         </div>
+
         <ConfirmDialog 
           title={"Are you sure?"}
           open={this.state.dialogOpen}
@@ -147,4 +133,8 @@ let stateMap = (state) => {return ({
   sessionId: state.signin.sessionToken,
 });};
 
-export default connect(stateMap)(Buy);
+let dispatchMap = (dispatch) => bindActionCreators({
+  logout: ()=>logout,
+}, dispatch)
+
+export default connect(stateMap, dispatchMap)(Buy);

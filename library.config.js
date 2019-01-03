@@ -50,7 +50,8 @@ module.exports = {
           'react-dom',
           'react-redux',
           'redux-thunk',
-          'spectre.css'
+          'spectre.css',
+          "@fortawesome/fontawesome-free",
         ],
     },
     plugins: [
