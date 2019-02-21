@@ -45,15 +45,18 @@ init();
 const App = ({history}) => (
   <ConnectedRouter history={history}>
     <div>
-      <Switch>
-        <Route exact path="/" component={Entrance} />
-        <Route path="/signin/" component={SignIn} />
-        <Route path="/signup/" component={SignUp} />
-        <Route path="/account/" component={Account} />
-        <Route path="/buy/" component={Buy} />
-        <Route path="/sell/" component={Sell} />
-        <Route component={Entrance} />
-      </Switch>
+      <div class="c-bgdiv bg-secondary c-bottomLayer"></div>
+      <div>
+        <Switch>
+          <Route exact path="/" component={Entrance} />
+          <Route path="/signin/" component={SignIn} />
+          <Route path="/signup/" component={SignUp} />
+          <Route path="/account/" component={Account} />
+          <Route path="/buy/" component={Buy} />
+          <Route path="/sell/" component={Sell} />
+          <Route component={Entrance} />
+        </Switch>
+      </div>
     </div>
   </ConnectedRouter>
 );

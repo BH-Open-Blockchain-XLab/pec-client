@@ -8,12 +8,23 @@ $fa-font-path: "../../node_modules/@fortawesome/fontawesome-free/webfonts";
 @import "./_size.scss";
 @import "./_color.scss";
 
-.c-indexBody {
-  background-color: black;
+.c-bgdiv {
+    position: absolute; 
+    top: 0px; 
+    bottom: 0px; 
+    width: 100%;
+}
+
+.c-bottomLayer {
+    z-index: -9999;
+}
+
+.c-index {
   background-image: url("/images/bg.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  z-index: -9998;
 }
 
 .c-appMain {

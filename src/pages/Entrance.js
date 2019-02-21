@@ -23,6 +23,7 @@ class Entrance extends React.Component {
     const props = this.props;
     return (
       <div>
+        <div class="c-bgdiv c-index"></div>
         <div class="columns m-2">
           <div class="column col-6 text-left">
             <h2 class="header-title col-6 text-light">PowExChain</h2>
