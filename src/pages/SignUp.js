@@ -63,7 +63,7 @@ class SignUp extends React.Component {
 
   render(){
     if (this.props.isLoggedIn){
-      return (<Redirect to="/dashboard/" />);
+      return (<Redirect to="/account/" />);
     }
 
     return (
@@ -87,7 +87,7 @@ class SignUp extends React.Component {
                   />
                   <input class="form-input mb-20px"
                          type="password"
-                         name="account"
+                         name="password"
                          placeholder="Password"
                   />
                   <Button isLoading={this.state.isSigning} />
@@ -110,7 +110,7 @@ let stateMap = (state) => {
 
 let dispatchMap = (dispatch) => bindActionCreators(
   {
-    signup: ()=>replace('/login/'),
+    signup: ()=>replace('/signin/'),
   },
   dispatch
 );
