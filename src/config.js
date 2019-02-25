@@ -1,5 +1,5 @@
 const config = {
-  baseUrl:"http://47.90.97.145:5000",
+  baseUrl:"http://192.168.1.251:8080",
 };
 
 export default config;

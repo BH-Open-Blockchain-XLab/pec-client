@@ -64,7 +64,7 @@ class Account extends React.Component{
   }
 
   async refresh(){
-    const url = "/usr/account/accountInfo/" + this.props.sessionId;
+    const url = "/usr/account/" + this.props.sessionId;
     let res;
     try{
       res = await api.get(url); 

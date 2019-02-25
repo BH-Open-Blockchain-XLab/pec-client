@@ -64,7 +64,7 @@ class Buy extends React.Component{
   async refresh(){
     let res;
     try{
-      res = await api.get('/tx/pool/poolInfo/' + this.props.sessionId); 
+      res = await api.get('/tx/pool/' + this.props.sessionId); 
     } catch(e){
       return;
     }

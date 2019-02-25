@@ -6,9 +6,9 @@ function TileIcon(props) {
 
   if (props.type == 'wind') {
     icon = "fa-wind";
-  } else if (props.types == 'water') {
+  } else if (props.type == 'water') {
     icon = "fa-water";
-  } else if (props.types == 'solar') {
+  } else if (props.type == 'solar') {
     icon = "fa-sun"
   }
 

@@ -27,7 +27,7 @@ async function initialLogin(){
   let sessionId = localStorage.getItem('sessionId');
   if (sessionId != null){
     store.dispatch(ACTION.login(sessionId));
-    let res = await api.get("/usr/alive/alive/" + sessionId);
+    let res = await api.get("/usr/alive/" + sessionId);
     if(res.msg == "alive"){
       return;
     }
