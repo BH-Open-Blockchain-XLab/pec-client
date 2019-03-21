@@ -16,6 +16,8 @@ import {replace, push} from 'connected-react-router';
 import api from "../jsonapi";
 import {logout} from "../thunks";
 
+import Status from "../status";
+
 
 function Button(props){
   if (props.isLoading){
@@ -105,13 +107,15 @@ class Sell extends React.Component {
       this.setState({
         sending: false, 
       });
-      if (!res || res.msg == "failed"){
-        throw new Error("sell failed");
-      } else{
+      if (!res){
+        throw new Error("Not responding");
+      } else if (!new Status(res.status).success){
+		throw new Error(new Status(res.status).info); 
+	  } else{
         this.props.submit();
       }
     } catch(e) {
-      alert("Failed to sell.");
+      alert(e.message());
     }
   }
 

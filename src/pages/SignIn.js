@@ -12,6 +12,7 @@ import {
   AppBar
 } from "../components"
 
+let Status = "../status";
 
 function Button(props){
   if (props.isLoading){
@@ -53,7 +54,7 @@ class SignIn extends React.Component {
     });
     try {
       let res = await api.post('/usr/login', logindata);
-      if(res['msg'] == 'passed'){
+      if(res && new Status(res.status).success){
         self.props.login(res["sessionId"]);
       } else{
         throw new Error("Login failed");

@@ -8,6 +8,8 @@ import {connect} from 'react-redux';
 import api from '../jsonapi';
 import {logout} from '../thunks';
 
+let Status = require("../status");
+
 function AccountInfo(props) {
   return (
     <div class="p-20px m-20px">
@@ -72,7 +74,7 @@ class Account extends React.Component{
       return;
     }
 
-    if(res && res["msg"] != "failed"){
+    if(res && new Status(res.status).success){
       this.setState({
         loading: false,
         purchase: res.purchase, 

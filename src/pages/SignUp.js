@@ -9,6 +9,7 @@ import api from '../jsonapi';
 import ACTION from '../actions';
 import {AppBar} from '../components';
 
+let Status = require("../status")
 
 function Button(props){
   if (props.isLogging){
@@ -48,7 +49,7 @@ class SignUp extends React.Component {
     });
     try {
       let res = await api.post('/usr/signup', signupdata);
-      if(res['msg'] == 'succeed'){
+      if(res && new Status(res.staus).success){
         self.props.signup();
       } else{
         throw new Error("Signup failed");

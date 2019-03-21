@@ -15,6 +15,8 @@ import {bindActionCreators} from "redux";
 
 import api from '../jsonapi';
 
+let Status = require("../status");
+
 class Buy extends React.Component{
   constructor(props){
     super(props);
@@ -51,11 +53,16 @@ class Buy extends React.Component{
           txHash: tx.txHash,
         }],
       });
-      if (!res || res.msg == "failed"){
-        throw new Error("purchase invalid");
-      }
+      if (!res){
+        throw new Error("Not responding.");
+      } else {
+	    let status = new Status(res.status);
+	    if (!status.success){
+	      throw new Error(status.info);
+		}
+	  }
     } catch(e) {
-      alert("Purchase failed");
+      alert(e.message());
     }
     this.handleClose();
     this.refresh();

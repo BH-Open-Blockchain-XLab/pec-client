@@ -51,7 +51,7 @@ class Status{
 	  this.serverFault = true;
 	}
 
-	if (invalidSessions.find(code)){
+	if (invalidSessions.includes(code)){
       this.invalidSession = true;
 	}
 	if (infoMap.get(code)){
@@ -59,3 +59,5 @@ class Status{
 	}
   }
 }
+
+module.exports = Status;
