@@ -17,21 +17,25 @@ function AccountInfo(props) {
          <i class="fas fa-user"></i> <b>Account Information</b>
       </div>
       <div class="bg-white p-20px my-2">
+
         <div class="columns py-1">
-           <div class="column col-5">Username:</div>
-           <div class="column col-7">{props.username}</div>
+           <div class="column col-12">Username: {props.account.username}</div>
         </div>
+
         <div class="columns py-1">
-           <div class="column col-5">Balance:</div>
-           <div class="column col-7">{props.balance}</div>
+           <div class="column col-12">Balance: {props.account.balance}</div>
         </div>
+
+		<div class="columns py-1">
+		   <div class="column col-12">Address: {props.account.address}</div>
+		</div>
+
       </div>
     </div>
   );
 }
 AccountInfo.propTypes = {
-  username: PropTypes.string.isRequired,
-  balance: PropTypes.number.isRequired,
+  account: PropTypes.object.isRequired,
 };
 
 function PurchaseDetails(props) {
@@ -56,10 +60,7 @@ class Account extends React.Component{
 
     this.state = {
       loading: true,
-      delivery: [],
-      purchase: [],
-      balance: "--",
-      account: "--",
+      account: undefined,
     };
 
     this.refresh = this.refresh.bind(this);
@@ -77,10 +78,7 @@ class Account extends React.Component{
     if(res && new Status(res.status).success){
       this.setState({
         loading: false,
-        purchase: res.purchase, 
-        delivery: res.delivery,
-        account: res.account,
-        balance: res.balance,
+		account: res
       });
     }
     console.log(res);
@@ -123,14 +121,14 @@ class Account extends React.Component{
         <div class="c-appContainer pt-50px">
           <div class="panel mt-20px c-appMain">
             <TabBar active="Account" />
-            <AccountInfo username={this.state.account} balance={this.state.balance} />
+            <AccountInfo account={this.state.account} />
 
             <div class="p-20px m-20px">
               <div class="">
                  <i class="fas fa-cart-arrow-down"></i> <b>Purchases</b>
               </div>
               <div class="bg-white p-20px my-2">
-                {this.state.purchase.map(
+                {this.state.account.purchase.map(
                   (tx) => (
                     <TxTile key={JSON.stringify(tx)} tx={tx} action={(
                       <PurchaseDetails /> 
@@ -145,7 +143,7 @@ class Account extends React.Component{
                 <i class="fas fa-truck"></i> <b>Delieveries</b>
               </div>
               <div class="bg-white p-20px my-2">
-                {this.state.delivery.map(
+                {this.state.account.delivery.map(
                   (tx) => (
                     <TxTile key={JSON.stringify(tx)} tx={tx}>
                       <DeliveryDetails /> 
