@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
   AppBar, 
-  ConfirmDialog,
   TabBar,
 } from '../components';
 
@@ -17,6 +16,8 @@ import api from "../jsonapi";
 import {logout} from "../thunks";
 
 import Status from "../status";
+
+import {confirmDialog} from "../actions";
 
 
 function Button(props){
@@ -78,18 +79,13 @@ function txToSell(formdata, sessionId){
 class Sell extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      open: false,
-      sending: false,
-    };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.submit = this.submit.bind(this);
   }
 
   handleSubmit(event){
-    this.setState({ open: true });
+    this.props.submit(this.submit);
     event.preventDefault();
   }
 
@@ -112,15 +108,11 @@ class Sell extends React.Component {
       } else if (!new Status(res.status).success){
 		throw new Error(new Status(res.status).info); 
 	  } else{
-        this.props.submit();
+        this.props.redirect();
       }
     } catch(e) {
       alert(e.message());
     }
-  }
-
-  handleClose(){
-    this.setState({ open: false });
   }
 
   render(){
@@ -137,9 +129,7 @@ class Sell extends React.Component {
 
         <div class="c-appContainer pt-50px">
           <div class="panel mt-20px c-appMain">
-            
             <TabBar active="Sell" />
-
             <div class="p-20px m-20px">
                 <form class="card"
                       id="sell-form"
@@ -168,22 +158,10 @@ class Sell extends React.Component {
                     </div>
                     <Button isLoading={false} />
                   </div>
-
-
                 </form>
             </div>
-
           </div>
-          
-        
         </div>
-
-        <ConfirmDialog
-          yes={()=>this.submit()}
-          no={()=>this.handleClose()}
-          title={"Are you sure?"}
-          open={this.state.open}
-        />
       </div>
     );
   }
@@ -191,7 +169,8 @@ class Sell extends React.Component {
 
 let dispatchMap = (dispatch) => bindActionCreators(
   {
-    submit: ()=>replace('/account/'),
+    submit: (action)=>confirmDialog("Are you sure?", action)
+    redirect: ()=>replace('/account/'),
     logout: ()=>logout,
   }, 
   dispatch

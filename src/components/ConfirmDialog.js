@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {closeDialog} from '../actions';
+
 class ConfirmDialog extends React.Component{
   constructor(props){
     super(props);
@@ -9,15 +11,15 @@ class ConfirmDialog extends React.Component{
   render(){
     const props = this.props;
     return (
-      <div class={"modal " + (props.open ? "active" : "")}>
-        <a class="modal-overlay" onClick={()=>props.no()}></a>
+      <div class={"modal " + (props.show ? "active" : "")}>
+        <a class="modal-overlay" onClick={()=>props.close()}></a>
         <div class="modal-container">
           <div class="modal-header">
-            <div class="modal-title h5">{props.title}</div>
+            <div class="modal-title h5">{props.info}</div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary" onClick={()=>props.yes()}>Yes</button>
-            <button class="btn btn-link" onClick={()=>props.no()}>No</button>
+            <button class="btn btn-primary" onClick={()=>props.action()}>Yes</button>
+            <button class="btn btn-link" onClick={()=>props.close()}>No</button>
           </div>
         </div>
       </div>
@@ -25,11 +27,16 @@ class ConfirmDialog extends React.Component{
   }
 }
 
-ConfirmDialog.propTypes = {
-  yes: PropTypes.func.isRequired,
-  no: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  open: PropTypes.bool.isRequired,
-}
+let stateMap = (state) => ({
+  show: state.dialog.confirmDialog,
+  info: state.dialog.info,
+  action: state.dialog.dialogAction,
+});
+
+let diapatchMap = () => bindActionCreators({
+    close: () => closeDialog(),
+  },
+  dispatch
+});
 
 export default ConfirmDialog;

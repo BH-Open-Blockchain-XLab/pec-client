@@ -6,10 +6,6 @@ import {createRootReducer} from './reducers';
 
 export const history = createHistory();
 
-export const initialState = {
-  isLoggedIn: false,
-};
-
 const store = createStore(
   createRootReducer(history),
   initialState,

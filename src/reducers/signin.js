@@ -1,5 +1,8 @@
-import {initialState} from '../store';
 import ACTION from '../actions';
+
+const initialState = {
+  isLoggedIn: false,
+};
 
 const signReducer = (state=initialState, action) => {
   switch(action.type){
