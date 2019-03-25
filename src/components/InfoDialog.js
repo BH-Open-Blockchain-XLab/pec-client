@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {closeDialog} from '../actions';
 import {connect} from 'react-redux';
 
-class ConfirmDialog extends React.Component{
+class Dialog extends React.Component{
   constructor(props){
     super(props);
   }
@@ -19,8 +19,7 @@ class ConfirmDialog extends React.Component{
             <div class="modal-title h5">{props.info}</div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary" onClick={()=>props.action()}>Yes</button>
-            <button class="btn btn-link" onClick={()=>props.close()}>No</button>
+            <button class="btn btn-primary" onClick={()=>props.close()}>OK</button>
           </div>
         </div>
       </div>
@@ -40,4 +39,4 @@ let diapatchMap = () => bindActionCreators({
   dispatch
 });
 
-export default connect(stateMap, dispatchMap)(ConfirmDialog);
+export default connect(stateMap, dispatchMap)(InfoDialog);
