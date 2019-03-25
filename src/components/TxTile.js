@@ -26,6 +26,14 @@ class TxTile extends React.Component {
   constructor(props){
     super(props);
     // TODO: time and date
+
+	this.showTx = this.showTx.bind(this);
+  }
+
+  showTx(){
+    // TODO: tx to string
+	const infoString = "";
+    this.show(infoString);
   }
 
   render() { 
@@ -39,7 +47,9 @@ class TxTile extends React.Component {
           <small class="tile-subtitle text-gray">￥{props.tx.value} · {this.date} · {this.time}</small>
         </div>
         <div class="tile-action">
-          {props.children}
+          <button class="btn btn-link" onclick={()=>this.showTx()}>
+            <i class="fas fa-caret-down"></i>
+          </button>
         </div>
       </div>
     );
@@ -49,4 +59,10 @@ TxTile.propTypes = {
   tx: PropTypes.object.isRequired,
 };
 
-export default TxTile;
+const dispatchMap = (dispatch) => bindActionCreators({
+    show: (infoString) => infoDialog(infoString), 
+  },
+  dispatch
+};
+
+export default connect(null, dispatchMap)(TxTile);
