@@ -40,6 +40,13 @@ class SignUp extends React.Component {
   async handleSignup(event, self) {
     event.preventDefault();
     let formdata = new FormData(document.getElementById('signup-form')); 
+
+	let passwd1 = formata.get('password');
+	let passwd2 = formata.get('password-again');
+	if (passwd1 != passwd2){
+      alert('Wrong password!');
+	  return;
+	}
     let signupdata = {
       account: formdata.get('account'),
       password: formdata.get('password'),
@@ -90,6 +97,11 @@ class SignUp extends React.Component {
                          type="password"
                          name="password"
                          placeholder="Password"
+                  />
+                  <input class="form-input mb-20px"
+                         type="password"
+                         name="password-again"
+                         placeholder="Password Again"
                   />
                   <Button isLoading={this.state.isSigning} />
                 </div>

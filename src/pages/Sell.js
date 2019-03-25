@@ -58,18 +58,25 @@ InputRow.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
+InputRow.propTypes = {
+  title: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+};
+
 function txToSell(formdata, sessionId){
+  // TODO: get time
   let data = {
     sessionId,
-    msg: "delivery",
     timestampSell: Date.now(),
     tx: [{
-        value: formdata.get("price"),
-        amount: formdata.get("value"),
-        type: formdata.get("type").toLowerCase(),
-        inputData: "none",
-      }
-    ],
+      timestampExpire: Date.now(),
+      value: formdata.get("price"),
+      amount: formdata.get("value"),
+      type: formdata.get("type").toLowerCase(),
+      inputData: "none", 
+      power: formdata.get("power");
+	}],
   }
 
   return data;
@@ -141,8 +148,10 @@ class Sell extends React.Component {
                   <div class="card-body form-horizontal">
 
                     <InputRow title="Value(kWh):" id="value" type="number" />
-
                     <InputRow title="Price(￥):" id="price" type="number" />
+                    <InputRow title="Power(kW):" id="power" type="number" />
+                    <InputRow title="Expire Date:" id="expire-date" type="date" />
+                    <InputRow title="Expire Time:" id="expire-time" type="time" />
 
                     <div class="form-group">
                       <div class="col-3 col-sm-12">
