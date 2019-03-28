@@ -12,6 +12,7 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import { logout } from '../thunks.js';
 import {bindActionCreators} from "redux";
+import {closeDialog, confirmDialog} from "../actions";
 
 import api from '../jsonapi';
 
@@ -24,26 +25,13 @@ class Buy extends React.Component{
       dialogOpen: false,
       txList: [],
     };
-    this.handleBuy = this.handleBuy.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.submitPurchase = this.submitPurchase.bind(this);
     this.refresh = this.refresh.bind(this);
   }
 
-  handleBuy(tx){
-    this.setState({
-      dialogOpen: true,
-      txToBuy: tx,
-    });
-  }
-  handleClose(){
-    this.setState({
-      dialogOpen: false,
-    });
-  }
+
   async submitPurchase(){
     //async fetch
-    let tx = this.state.txToBuy;
     try {
       let res = await api.put('/tx/purchase', {
         sessionId: this.props.sessionId,
@@ -64,7 +52,6 @@ class Buy extends React.Component{
     } catch(e) {
       alert(e.message());
     }
-    this.handleClose();
     this.refresh();
   }
 
@@ -100,6 +87,7 @@ class Buy extends React.Component{
         <Redirect to="/signin/" />         
       );
     }
+	// TODO: add selection
     return (
       <div>
         <AppBar buttonLabel="LOGOUT" action={()=>props.logout()} /> 
@@ -112,24 +100,13 @@ class Buy extends React.Component{
             <div class="p-20px m-20px">
               <div class="bg-white p-20px my-2">
                 {txList.map(tx => (
-                  <TxTile tx={tx} key={JSON.stringify(tx)}>
-                    <button class="btn btn-primary" onClick={()=>this.handleBuy(tx)}>
-                      Buy
-                    </button>
-                  </TxTile>
+                  <TxTile tx={tx} key={JSON.stringify(tx)} action={()=>this.submitPurchase()} />
                 ))}     
               </div>
             </div>
 
           </div>
         </div>
-
-        <ConfirmDialog 
-          title={"Are you sure?"}
-          open={this.state.dialogOpen}
-          yes={() => this.submitPurchase()}
-          no={() => this.handleClose()}
-        />
       </div>
     );
   }

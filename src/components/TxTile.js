@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
+import {confirmDialog, infoDialog} from "../actions";
+
 function TileIcon(props) {
   let icon;
 
@@ -33,10 +35,14 @@ class TxTile extends React.Component {
 
   showTx(){
     const tx = this.props.tx;
-	const infoString = "";
-	infoString += "Tx Hash: " + tx.txHash + "\n";
-	infoString += "Block Height: " + tx.blockHeight + "\n";
-    this.show(infoString);
+    const infoString = "";
+    infoString += "Tx Hash: " + tx.txHash + "\n";
+    infoString += "Block Height: " + tx.blockHeight + "\n";
+	if (this.props.action){
+	  this.showConfirm("Buy this?\n" + infoString, action);
+	} else{
+      this.show(infoString);
+	}
   }
 
   render() { 
@@ -64,6 +70,7 @@ TxTile.propTypes = {
 
 const dispatchMap = (dispatch) => bindActionCreators({
     show: (infoString) => infoDialog(infoString), 
+    showConfirm: (info, action) => confirmDialog(info, action),
   },
   dispatch
 };
