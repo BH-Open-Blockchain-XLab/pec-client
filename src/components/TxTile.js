@@ -25,14 +25,17 @@ TileIcon.propsType = {
 class TxTile extends React.Component {
   constructor(props){
     super(props);
-    // TODO: time and date
-
+    let date = new Date(Number(props.tx.timestampSell));
+    this.date = date.getLocaleString();
+	
 	this.showTx = this.showTx.bind(this);
   }
 
   showTx(){
-    // TODO: tx to string
+    const tx = this.props.tx;
 	const infoString = "";
+	infoString += "Tx Hash: " + tx.txHash + "\n";
+	infoString += "Block Height: " + tx.blockHeight + "\n";
     this.show(infoString);
   }
 

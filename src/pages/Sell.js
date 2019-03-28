@@ -65,18 +65,18 @@ InputRow.propTypes = {
 };
 
 function txToSell(formdata, sessionId){
-  // TODO: get time
+  let date = new Date(formdata.get("expire-time"));
   let data = {
     sessionId,
     timestampSell: Date.now(),
     tx: [{
-      timestampExpire: Date.now(),
+      timestampExpire: date.getTime(),
       value: formdata.get("price"),
       amount: formdata.get("value"),
       type: formdata.get("type").toLowerCase(),
       inputData: "none", 
-      power: formdata.get("power");
-	}],
+      power: formdata.get("power");	
+    }],
   }
 
   return data;
@@ -150,8 +150,7 @@ class Sell extends React.Component {
                     <InputRow title="Value(kWh):" id="value" type="number" />
                     <InputRow title="Price(￥):" id="price" type="number" />
                     <InputRow title="Power(kW):" id="power" type="number" />
-                    <InputRow title="Expire Date:" id="expire-date" type="date" />
-                    <InputRow title="Expire Time:" id="expire-time" type="time" />
+                    <InputRow title="Expire Time:" id="expire-time" type="datetime-local" />
 
                     <div class="form-group">
                       <div class="col-3 col-sm-12">
