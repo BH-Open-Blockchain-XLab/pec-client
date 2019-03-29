@@ -17,7 +17,8 @@ import {logout} from "../thunks";
 
 import Status from "../status";
 
-import {confirmDialog} from "../actions";
+import ACTION from "../actions";
+const confirmDialog = ACTION.confirmDialog;
 
 
 function Button(props){
@@ -75,7 +76,7 @@ function txToSell(formdata, sessionId){
       amount: formdata.get("value"),
       type: formdata.get("type").toLowerCase(),
       inputData: "none", 
-      power: formdata.get("power");	
+      power: formdata.get("power"),	
     }],
   }
 
@@ -177,7 +178,7 @@ class Sell extends React.Component {
 
 let dispatchMap = (dispatch) => bindActionCreators(
   {
-    submit: (action)=>confirmDialog("Are you sure?", action)
+    submit: (action)=>confirmDialog("Are you sure?", action),
     redirect: ()=>replace('/account/'),
     logout: ()=>logout,
   }, 

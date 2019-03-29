@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {closeDialog} from '../actions';
+import ACTION from '../actions';
+const closeDialog = ACTION.closeDialog;
+
 import {connect} from 'react-redux';
 
 class ConfirmDialog extends React.Component{
@@ -38,6 +40,6 @@ let diapatchMap = () => bindActionCreators({
     close: () => closeDialog(),
   },
   dispatch
-});
+);
 
 export default connect(stateMap, dispatchMap)(ConfirmDialog);

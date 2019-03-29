@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-import {confirmDialog, infoDialog} from "../actions";
+import ACTION from "../actions";
+const confirmDialog = ACTION.confirmDialog;
+const infoDialog = ACTION.infoDialog;
 
 function TileIcon(props) {
   let icon;
@@ -73,6 +75,6 @@ const dispatchMap = (dispatch) => bindActionCreators({
     showConfirm: (info, action) => confirmDialog(info, action),
   },
   dispatch
-};
+);
 
 export default connect(null, dispatchMap)(TxTile);
