@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import ACTION from "../actions";
 const confirmDialog = ACTION.confirmDialog;
 const infoDialog = ACTION.infoDialog;
+import {connect} from 'react-redux';
+
+import {bindActionCreators} from "redux";
 
 function TileIcon(props) {
   let icon;
@@ -30,20 +33,22 @@ class TxTile extends React.Component {
   constructor(props){
     super(props);
     let date = new Date(Number(props.tx.timestampSell));
-    this.date = date.getLocaleString();
+	
+    this.date = date.toLocaleString();
 	
 	this.showTx = this.showTx.bind(this);
   }
 
   showTx(){
     const tx = this.props.tx;
-    const infoString = "";
-    infoString += "Tx Hash: " + tx.txHash + "\n";
-    infoString += "Block Height: " + tx.blockHeight + "\n";
+	let hash = tx.txHash;
+    let infoString = "";
+    infoString += "Tx Hash: " + hash.substring(0,10) + "......" + hash.substring(hash.length-10, hash.length) + "; ";
+    infoString += "Block Height: " + tx.blockHeight + "; ";
 	if (this.props.action){
-	  this.showConfirm("Buy this?\n" + infoString, action);
+	  this.props.showConfirm("Buy this?\n" + infoString, this.props.action);
 	} else{
-      this.show(infoString);
+      this.props.show(infoString);
 	}
   }
 
@@ -58,7 +63,7 @@ class TxTile extends React.Component {
           <small class="tile-subtitle text-gray">￥{props.tx.value} · {this.date} · {this.time}</small>
         </div>
         <div class="tile-action">
-          <button class="btn btn-link" onclick={()=>this.showTx()}>
+          <button class="btn btn-link" onClick={()=>this.showTx()}>
             <i class="fas fa-caret-down"></i>
           </button>
         </div>

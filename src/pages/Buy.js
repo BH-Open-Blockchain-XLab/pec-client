@@ -12,7 +12,8 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import { logout } from '../thunks.js';
 import {bindActionCreators} from "redux";
-import {closeDialog, confirmDialog} from "../actions";
+import ACTION from "../actions";
+const closeDialog = ACTION.closeDialog;
 
 import api from '../jsonapi';
 
@@ -30,7 +31,7 @@ class Buy extends React.Component{
   }
 
 
-  async submitPurchase(){
+  async submitPurchase(tx){
     //async fetch
     try {
       let res = await api.put('/tx/purchase', {
@@ -50,8 +51,11 @@ class Buy extends React.Component{
 		}
 	  }
     } catch(e) {
+	  console.log(e);
       alert(e.message());
+	  this.props.closeDialog();
     }
+	this.props.closeDialog();
     this.refresh();
   }
 
@@ -100,7 +104,7 @@ class Buy extends React.Component{
             <div class="p-20px m-20px">
               <div class="bg-white p-20px my-2">
                 {txList.map(tx => (
-                  <TxTile tx={tx} key={JSON.stringify(tx)} action={()=>this.submitPurchase()} />
+                  <TxTile tx={tx} key={JSON.stringify(tx)} action={()=>this.submitPurchase(tx)} />
                 ))}     
               </div>
             </div>
@@ -119,6 +123,7 @@ let stateMap = (state) => {return ({
 
 let dispatchMap = (dispatch) => bindActionCreators({
   logout: ()=>logout,
+  closeDialog: ()=>closeDialog(),
 }, dispatch)
 
 export default connect(stateMap, dispatchMap)(Buy);

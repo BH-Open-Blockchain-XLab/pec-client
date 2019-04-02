@@ -19,7 +19,7 @@ import Status from "../status";
 
 import ACTION from "../actions";
 const confirmDialog = ACTION.confirmDialog;
-
+import store from "../store";
 
 function Button(props){
   if (props.isLoading){
@@ -66,12 +66,12 @@ InputRow.propTypes = {
 };
 
 function txToSell(formdata, sessionId){
-  let date = new Date(formdata.get("expire-time"));
+  let date = Date.parse(formdata.get("expire-date") + "T" + formdata.get("expire-time") + ":00");
   let data = {
     sessionId,
     timestampSell: Date.now(),
     tx: [{
-      timestampExpire: date.getTime(),
+      timestampExpire: date,
       value: formdata.get("price"),
       amount: formdata.get("value"),
       type: formdata.get("type").toLowerCase(),
@@ -151,7 +151,8 @@ class Sell extends React.Component {
                     <InputRow title="Value(kWh):" id="value" type="number" />
                     <InputRow title="Price(￥):" id="price" type="number" />
                     <InputRow title="Power(kW):" id="power" type="number" />
-                    <InputRow title="Expire Time:" id="expire-time" type="datetime-local" />
+                    <InputRow title="Expire Date:" id="expire-date" type="date" />
+                    <InputRow title="Expire Time:" id="expire-time" type="time" />
 
                     <div class="form-group">
                       <div class="col-3 col-sm-12">

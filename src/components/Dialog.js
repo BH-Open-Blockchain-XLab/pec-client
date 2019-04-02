@@ -1,3 +1,6 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import ConfirmDialog from './ConfirmDialog';
 import InfoDialog from './InfoDialog';
 

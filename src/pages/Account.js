@@ -11,6 +11,7 @@ import {logout} from '../thunks';
 let Status = require("../status");
 
 function AccountInfo(props) {
+  let addr = props.account.address;
   return (
     <div class="p-20px m-20px">
       <div class="">
@@ -19,7 +20,7 @@ function AccountInfo(props) {
       <div class="bg-white p-20px my-2">
 
         <div class="columns py-1">
-           <div class="column col-12">Username: {props.account.username}</div>
+           <div class="column col-12">Username: {props.account.account}</div>
         </div>
 
         <div class="columns py-1">
@@ -27,7 +28,7 @@ function AccountInfo(props) {
         </div>
 
 		<div class="columns py-1">
-		   <div class="column col-12">Address: {props.account.address}</div>
+		   <div class="column col-12">Address: {addr.substring(0, 10) + "......" + addr.substring(addr.length - 10, addr.length)}</div>
 		</div>
 
       </div>
@@ -37,22 +38,6 @@ function AccountInfo(props) {
 AccountInfo.propTypes = {
   account: PropTypes.object.isRequired,
 };
-
-function PurchaseDetails(props) {
-  return (
-    <button class="btn btn-link">
-      <i class="fas fa-caret-down"></i>
-    </button>
-  );
-}
-
-function DeliveryDetails(props) {
-  return (
-    <button class="btn btn-link">
-      <i class="fas fa-caret-down"></i>
-    </button>
-  );
-}
 
 class Account extends React.Component{
   constructor(props){
@@ -81,7 +66,6 @@ class Account extends React.Component{
 		account: res
       });
     }
-    console.log(res);
   }
 
   componentDidMount(){
@@ -130,9 +114,7 @@ class Account extends React.Component{
               <div class="bg-white p-20px my-2">
                 {this.state.account.purchase.map(
                   (tx) => (
-                    <TxTile key={JSON.stringify(tx)} tx={tx} action={(
-                      <PurchaseDetails /> 
-                    )} />
+                    <TxTile key={JSON.stringify(tx)} tx={tx} />
                   )
                 )} 
               </div>
@@ -145,9 +127,7 @@ class Account extends React.Component{
               <div class="bg-white p-20px my-2">
                 {this.state.account.delivery.map(
                   (tx) => (
-                    <TxTile key={JSON.stringify(tx)} tx={tx}>
-                      <DeliveryDetails /> 
-                    </TxTile>
+                    <TxTile key={JSON.stringify(tx)} tx={tx} />
                   )
                 )} 
               </div>

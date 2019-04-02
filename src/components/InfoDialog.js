@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import ACTION from '../actions';
 const closeDialog = ACTION.closeDialog;
 
+import {bindActionCreators} from "redux";
+
 import {connect} from 'react-redux';
 
-class Dialog extends React.Component{
+class InfoDialog extends React.Component{
   constructor(props){
     super(props);
   }
@@ -30,12 +32,13 @@ class Dialog extends React.Component{
 }
 
 let stateMap = (state) => ({
-  show: state.dialog.confirmDialog,
-  info: state.dialog.info,
+  show: state.dialog.infoDialog,
+  info: state.dialog.dialogInfo,
   action: state.dialog.dialogAction,
 });
 
-let diapatchMap = () => bindActionCreators({
+let dispatchMap = (dispatch) => bindActionCreators({
+    
     close: () => closeDialog(),
   },
   dispatch

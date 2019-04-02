@@ -8,6 +8,7 @@ import {ConnectedRouter} from 'connected-react-router';
 import "./scss/main.scss";
 
 import api from './jsonapi';
+import Dialog from "./components/Dialog";
 
 import {
   Buy,
@@ -23,15 +24,16 @@ import {PlainAppBar} from './components';
 import {default as store, history} from './store';
 import ACTION from './actions';
 
+import Status from './status';
+
 async function initialLogin(){
   let sessionId = localStorage.getItem('sessionId');
   if (sessionId != null){
     store.dispatch(ACTION.login(sessionId));
     let res = await api.get("/usr/alive/" + sessionId);
-    if(res.msg == "alive"){
+    if(res && new Status(res.status).success){
       return;
     }
-    console.log("session not valid");
     store.dispatch(ACTION.logout());
   }
 }
@@ -46,6 +48,7 @@ const App = ({history}) => (
   <ConnectedRouter history={history}>
     <div>
       <div class="c-bgdiv bg-secondary c-bottomLayer"></div>
+	  <Dialog />
       <div>
         <Switch>
           <Route exact path="/" component={Entrance} />

@@ -8,7 +8,7 @@ export const history = createHistory();
 
 const store = createStore(
   createRootReducer(history),
-  initialState,
+  {},
   compose(
     applyMiddleware(
       thunk,

@@ -12,7 +12,7 @@ import {
   AppBar
 } from "../components"
 
-let Status = "../status";
+import Status from "../status";
 
 function Button(props){
   if (props.isLoading){

@@ -41,8 +41,8 @@ class SignUp extends React.Component {
     event.preventDefault();
     let formdata = new FormData(document.getElementById('signup-form')); 
 
-	let passwd1 = formata.get('password');
-	let passwd2 = formata.get('password-again');
+	let passwd1 = formdata.get('password');
+	let passwd2 = formdata.get('password-again');
 	if (passwd1 != passwd2){
       alert('Wrong password!');
 	  return;
@@ -56,16 +56,20 @@ class SignUp extends React.Component {
     });
     try {
       let res = await api.post('/usr/signup', signupdata);
-      if(res && new Status(res.staus).success){
+      if(res && new Status(res.status).success){
         self.props.signup();
       } else{
-        throw new Error("Signup failed");
+	    if(res){
+          throw new Error(new Status(res.status).info);
+		} else{
+          throw new Error("Signup failed");
+		}
       }
     } catch(e){
       this.setState({
         isSigning: false, 
       });
-      alert("Signup failed.")
+      alert(e.message);
     }
   }
 

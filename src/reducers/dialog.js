@@ -20,7 +20,7 @@ const dialogReducer = (state=initialState, action) => {
       return {
         ...state,
         infoDialog: false,
-        confirmDialog: false,
+        confirmDialog: true,
         dialogInfo: action.info,
         dialogAction: action.dialogAction,
       };
